@@ -23,8 +23,8 @@ RUN chmod +x ./gradlew
 # Build the application
 RUN ./gradlew :api-gateway:build -x test
 
-# Copy the built JAR file
-RUN cp api-gateway/build/libs/*.jar app.jar
+# Copy the built JAR file (pick the boot jar deterministically)
+RUN cp $(ls api-gateway/build/libs/*-SNAPSHOT.jar | head -n 1) app.jar
 
 # Expose the port
 EXPOSE 8080

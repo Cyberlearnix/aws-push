@@ -23,15 +23,16 @@ RUN chmod +x ./gradlew
 # Build the application
 RUN ./gradlew :order-service:build -x test
 
-# Copy the built JAR file
-RUN cp order-service/build/libs/*.jar app.jar
+# Copy the built JAR file deterministically
+RUN JAR_FILE=$(ls order-service/build/libs/*-SNAPSHOT.jar 2>/dev/null || ls order-service/build/libs/*.jar | head -n 1) \
+    && cp "$JAR_FILE" app.jar
 
 # Expose the port
-EXPOSE 8084
+EXPOSE 8085
 
 # Add health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8084/actuator/health || exit 1
+  CMD curl -f http://localhost:8085/actuator/health || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

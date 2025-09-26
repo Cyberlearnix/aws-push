@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    config:
+      enabled: false
+    refresh:
+      enabled: false
+
+management:
+  health:
+    defaults:
+      enabled: false
+    redis:
+      enabled: false
+    refresh:
+      enabled: false
+    probes:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# Disable Eureka registration and fetching during tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+    healthcheck:
+      enabled: false
+  instance:
+    lease-renewal-interval-in-seconds: 30
+
+# Use random ports and in-memory DB settings during tests if applicable
+server:
+  port: 0

@@ -6,10 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/config-server.iml" filepath="$PROJECT_DIR$/.idea/modules/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-gateway/cyber-lms-microservices.api-gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api-gateway/cyber-lms-microservices.api-gateway.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/config-server/cyber-lms-microservices.config-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/config-server/cyber-lms-microservices.config-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/course-service/cyber-lms-microservices.course-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/course-service/cyber-lms-microservices.course-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/cyber-lms-microservices.eureka-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/cyber-lms-microservices.eureka-server.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/instructor-service/cyber-lms-microservices.instructor-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/instructor-service/cyber-lms-microservices.instructor-service.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/student_service/cyber-lms-microservices.student_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/student_service/cyber-lms-microservices.student_service.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/cyber-lms-microservices.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/cyber-lms-microservices.user-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.iml" />
     </modules>

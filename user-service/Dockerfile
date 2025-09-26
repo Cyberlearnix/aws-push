@@ -23,8 +23,9 @@ RUN chmod +x ./gradlew
 # Build the application
 RUN ./gradlew :user-service:build -x test
 
-# Copy the built JAR file
-RUN cp user-service/build/libs/*.jar app.jar
+# Copy the built JAR file deterministically
+RUN JAR_FILE=$(ls user-service/build/libs/*-SNAPSHOT.jar 2>/dev/null || ls user-service/build/libs/*.jar | head -n 1) \
+    && cp "$JAR_FILE" app.jar
 
 # Expose the port
 EXPOSE 8081
