@@ -1,0 +1,423 @@
+{
+  "info": {
+    "_postman_id": "e2f5a1b4-4a2b-4a64-9f2c-aaa111bbb222",
+    "name": "Instructor Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for instructor-service APIs"
+  },
+  "item": [
+    {
+      "name": "Health - Actuator (no auth required)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/actuator/health"
+      }
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/dashboard"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+                ],
+                "url": "{{baseUrl}}/instructors/{{instructorId}}/dashboard"
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"instructorId\": \"{{instructorId}}\",\n  \"totalCourses\": 1,\n  \"totalStudents\": 5,\n  \"totalEarnings\": 50.0,\n  \"averageRating\": 4.5\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Course Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/analytics"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+                ],
+                "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/analytics"
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"instructorId\": \"{{instructorId}}\",\n  \"courseId\": {{courseId}},\n  \"completionPercent\": 42.0,\n  \"dropouts\": 0,\n  \"activeStudents\": 5\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Earnings",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/earnings"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+                ],
+                "url": "{{baseUrl}}/instructors/{{instructorId}}/earnings"
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"instructorId\": \"{{instructorId}}\",\n  \"totalEarnings\": 50.0\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Intro to Spring\",\n  \"description\": \"Basics of Spring Boot\",\n  \"published\": true\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"id\": {{courseId}},\n  \"instructorId\": \"{{instructorId}}\",\n  \"title\": \"Intro to Spring\",\n  \"description\": \"Basics of Spring Boot\",\n  \"published\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "[{\n  \"id\": {{courseId}},\n  \"instructorId\": \"{{instructorId}}\",\n  \"title\": \"Intro to Spring\",\n  \"description\": \"Basics of Spring Boot\",\n  \"published\": true\n}]"
+            }
+          ]
+        },
+        {
+          "name": "Get Course Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}"
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Intro to Spring - Updated\",\n  \"description\": \"Updated description\",\n  \"published\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content (Modules & Upload)",
+      "item": [
+        {
+          "name": "Add Module",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/modules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": {{moduleId}},\n  \"courseId\": {{courseId}},\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Module",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/modules/{{moduleId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lesson 1 - Updated\",\n  \"content\": \"Updated content\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Module",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/modules/{{moduleId}}"
+          }
+        },
+        {
+          "name": "Upload Resource (multipart)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "/path/to/your/file.pdf" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"uploaded\": \"file.pdf\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Communication (Announcements & Messages)",
+      "item": [
+        {
+          "name": "Post Announcement",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/announcements",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Welcome\",\n  \"message\": \"Course begins next week.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 1,\n  \"courseId\": {{courseId}},\n  \"title\": \"Welcome\",\n  \"message\": \"Course begins next week.\",\n  \"createdAt\": \"2025-09-18T14:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/messages",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Reminder\",\n  \"message\": \"Don't forget to complete lesson 1.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": 2,\n  \"courseId\": {{courseId}},\n  \"subject\": \"Reminder\",\n  \"message\": \"Don't forget to complete lesson 1.\",\n  \"createdAt\": \"2025-09-18T14:05:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Announcements",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/announcements"
+          }
+        },
+        {
+          "name": "List Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/messages"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Students & Grades",
+      "item": [
+        {
+          "name": "List Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/students"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "[{\n  \"studentId\": 101,\n  \"name\": \"Student-101\",\n  \"email\": \"student101@example.com\",\n  \"progressPercent\": 60.0\n}]"
+            }
+          ]
+        },
+        {
+          "name": "Get Student Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/students/{{studentId}}"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"studentId\": {{studentId}},\n  \"courseId\": {{courseId}},\n  \"completionPercent\": 75.0,\n  \"status\": \"IN_PROGRESS\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Assign/Update Grade",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/grades",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": {{studentId}},\n  \"grade\": 92.5,\n  \"remarks\": \"Great work!\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8083",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "REPLACE_WITH_JWT_WITH_ROLE_INSTRUCTOR",
+      "type": "string"
+    },
+    {
+      "key": "instructorId",
+      "value": "00000000-0000-0000-0000-000000000001",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "moduleId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "studentId",
+      "value": "101",
+      "type": "string"
+    }
+  ]
+}

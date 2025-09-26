@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: cyberlms-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+# Usage:
+# 1) Install Docker Desktop and ensure it is running.
+# 2) From the repository root, run: docker compose up -d redis
+# 3) Verify: docker compose ps  (should show cyberlms-redis healthy)
+# 4) App connects using spring.data.redis.host=localhost and port=6379

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="cyber-lms-microservices.config-server.main" />
+        <module name="cyber-lms-microservices.course-service.main" />
+        <module name="cyber-lms-microservices.eureka-server.main" />
+        <module name="cyber-lms-microservices.order-service.main" />
+        <module name="cyber-lms-microservices.instructor-service.main" />
+        <module name="cyber-lms-microservices.student_service.main" />
+        <module name="cyber-lms-microservices.user-service.main" />
+        <module name="cyber-lms-microservices.api-gateway.main" />
+        <module name="cyber-lms-microservices.payment-service.main" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cyber-lms-microservices.api-gateway" options="-parameters" />
+      <module name="cyber-lms-microservices.api-gateway.main" options="-parameters" />
+      <module name="cyber-lms-microservices.api-gateway.test" options="-parameters" />
+      <module name="cyber-lms-microservices.config-server" options="-parameters" />
+      <module name="cyber-lms-microservices.config-server.main" options="-parameters" />
+      <module name="cyber-lms-microservices.config-server.test" options="-parameters" />
+      <module name="cyber-lms-microservices.course-service" options="-parameters" />
+      <module name="cyber-lms-microservices.course-service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.course-service.test" options="-parameters" />
+      <module name="cyber-lms-microservices.eureka-server" options="-parameters" />
+      <module name="cyber-lms-microservices.eureka-server.main" options="-parameters" />
+      <module name="cyber-lms-microservices.eureka-server.test" options="-parameters" />
+      <module name="cyber-lms-microservices.instructor-service" options="-parameters" />
+      <module name="cyber-lms-microservices.instructor-service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.instructor-service.test" options="-parameters" />
+      <module name="cyber-lms-microservices.order-service" options="-parameters" />
+      <module name="cyber-lms-microservices.order-service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.order-service.test" options="-parameters" />
+      <module name="cyber-lms-microservices.payment-service" options="-parameters" />
+      <module name="cyber-lms-microservices.payment-service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.payment-service.test" options="-parameters" />
+      <module name="cyber-lms-microservices.student_service" options="-parameters" />
+      <module name="cyber-lms-microservices.student_service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.student_service.test" options="-parameters" />
+      <module name="cyber-lms-microservices.user-service" options="-parameters" />
+      <module name="cyber-lms-microservices.user-service.main" options="-parameters" />
+      <module name="cyber-lms-microservices.user-service.test" options="-parameters" />
+      <module name="instructor-service" options="-parameters" />
+      <module name="instructor-service.main" options="-parameters" />
+      <module name="instructor-service.test" options="-parameters" />
+    </option>
+  </component>
+</project>

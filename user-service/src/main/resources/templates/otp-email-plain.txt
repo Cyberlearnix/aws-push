@@ -1,0 +1,32 @@
+===============================================
+🔐 OTP VERIFICATION - CyberLearnix
+===============================================
+
+Hello!
+
+You've requested a One-Time Password (OTP) to access your CyberLearnix account.
+
+Your Verification Code: {{OTP_CODE}}
+
+⏰ IMPORTANT: This code will expire in 5 minutes for your security.
+
+🛡️ SECURITY TIPS:
+• Never share this code with anyone
+• CyberLearnix will never ask for your OTP via phone or email
+• If you didn't request this code, please ignore this email
+• For security, this code can only be used once
+
+⚠️ SECURITY NOTICE:
+If you didn't request this OTP, your account may be compromised. 
+Please contact our support team immediately.
+
+If you're having trouble with the code, you can request a new one from the login page.
+
+===============================================
+CyberLearnix Private Limited
+📧 support@cyberlearnix.com
+🌐 www.cyberlearnix.com
+📱 +1 (555) 123-4567
+
+This is an automated message. Please do not reply to this email.
+===============================================

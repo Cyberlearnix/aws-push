@@ -1,0 +1,124 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-16T15:44:47.000Z",
+  "__exported_by": "Insomnia/8.0.0",
+  "resources": [
+    {
+      "_id": "wrk_user_service",
+      "parentId": null,
+      "modified": 1660000000000,
+      "created": 1660000000000,
+      "name": "User Service API",
+      "description": "User Service API Collection",
+      "scope": "collection"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_user_service",
+      "modified": 1660000000001,
+      "created": 1660000000001,
+      "name": "Authentication",
+      "description": "Authentication endpoints"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1660000000002,
+      "created": 1660000000002,
+      "name": "Login",
+      "description": "Authenticate user and get JWT token",
+      "method": "POST",
+      "url": "http://localhost:8080/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"email\": \"user@example.com\", \"password\": \"yourpassword\"}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "fld_students",
+      "parentId": "wrk_user_service",
+      "modified": 1660000000003,
+      "created": 1660000000003,
+      "name": "Students",
+      "description": "Student management endpoints"
+    },
+    {
+      "_id": "req_get_students",
+      "parentId": "fld_students",
+      "modified": 1660000000004,
+      "created": 1660000000004,
+      "name": "Get All Students",
+      "description": "Get a list of all students",
+      "method": "GET",
+      "url": "http://localhost:8080/api/students",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_get_student",
+      "parentId": "fld_students",
+      "modified": 1660000000005,
+      "created": 1660000000005,
+      "name": "Get Student by ID",
+      "description": "Get student details by ID",
+      "method": "GET",
+      "url": "http://localhost:8080/api/students/1",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_create_student",
+      "parentId": "fld_students",
+      "modified": 1660000000006,
+      "created": 1660000000006,
+      "name": "Create Student",
+      "description": "Create a new student",
+      "method": "POST",
+      "url": "http://localhost:8080/api/students",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"firstName\":\"Jane\",\"lastName\":\"Smith\",\"email\":\"jane@example.com\",\"password\":\"securepassword123\",\"role\":\"STUDENT\"}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_user_service",
+      "modified": 1660000000007,
+      "created": 1660000000007,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "auth_token": ""
+      }
+    }
+  ]
+}

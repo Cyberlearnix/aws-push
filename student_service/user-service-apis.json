@@ -1,0 +1,237 @@
+{
+  "name": "User Service API Documentation",
+  "version": "1.0.0",
+  "description": "Comprehensive API documentation for the User Service",
+  "baseUrl": "http://localhost:8080",
+  "endpoints": [
+    {
+      "name": "Login",
+      "method": "POST",
+      "path": "/auth/login",
+      "description": "Authenticate user and get JWT token",
+      "request": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "user@example.com",
+          "password": "yourpassword"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "token": "jwt.token.here",
+            "userId": 1,
+            "email": "user@example.com",
+            "role": "STUDENT",
+            "firstName": "John",
+            "lastName": "Doe"
+          }
+        },
+        "error": {
+          "status": 401,
+          "body": {
+            "error": "Invalid credentials"
+          }
+        }
+      }
+    },
+    {
+      "name": "Get All Students",
+      "method": "GET",
+      "path": "/api/students",
+      "description": "Get a list of all students",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer <jwt_token>"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": [
+            {
+              "id": 1,
+              "firstName": "John",
+              "lastName": "Doe",
+              "email": "john@example.com",
+              "role": "STUDENT",
+              "enabled": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Student by ID",
+      "method": "GET",
+      "path": "/api/students/{id}",
+      "description": "Get student details by ID",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer <jwt_token>"
+        },
+        "pathParams": {
+          "id": 1
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@example.com",
+            "role": "STUDENT",
+            "enabled": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Create Student",
+      "method": "POST",
+      "path": "/api/students",
+      "description": "Create a new student",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer <jwt_token>"
+        },
+        "body": {
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "email": "jane@example.com",
+          "password": "securepassword123",
+          "role": "STUDENT"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 201,
+          "body": {
+            "id": 2,
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "email": "jane@example.com",
+            "role": "STUDENT",
+            "enabled": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Update Student",
+      "method": "PUT",
+      "path": "/api/students/{id}",
+      "description": "Update student details",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer <jwt_token>"
+        },
+        "pathParams": {
+          "id": 1
+        },
+        "body": {
+          "firstName": "John",
+          "lastName": "Doe-Updated",
+          "email": "john.updated@example.com"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Doe-Updated",
+            "email": "john.updated@example.com",
+            "role": "STUDENT",
+            "enabled": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete Student",
+      "method": "DELETE",
+      "path": "/api/students/{id}",
+      "description": "Delete a student by ID",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer <jwt_token>"
+        },
+        "pathParams": {
+          "id": 1
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "message": "Student deleted successfully"
+          }
+        }
+      }
+    },
+    {
+      "name": "Change Password",
+      "method": "PUT",
+      "path": "/api/students/{id}/change-password",
+      "description": "Change user password",
+      "requiresAuth": true,
+      "request": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer <jwt_token>"
+        },
+        "pathParams": {
+          "id": 1
+        },
+        "body": {
+          "currentPassword": "oldpassword",
+          "newPassword": "newsecurepassword123"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "message": "Password updated successfully"
+          }
+        }
+      }
+    },
+    {
+      "name": "Forgot Password",
+      "method": "POST",
+      "path": "/api/auth/forgot-password",
+      "description": "Request password reset link",
+      "request": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "user@example.com"
+        }
+      },
+      "response": {
+        "success": {
+          "status": 200,
+          "body": {
+            "message": "Password reset link sent to your email"
+          }
+        }
+      }
+    }
+  ]
+}

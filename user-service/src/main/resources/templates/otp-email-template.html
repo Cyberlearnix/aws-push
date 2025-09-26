@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - CyberLearnix</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .otp-container {
+            background-color: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .otp-code {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 8px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .otp-label {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .expiry-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .security-tips {
+            background-color: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .security-tips h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .security-tips ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .security-tips li {
+            margin: 8px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+        .warning strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 OTP Verification</h1>
+            <p>CyberLearnix - Secure Learning Platform</p>
+        </div>
+        
+        <div class="content">
+            <h2>Hello!</h2>
+            <p>You've requested a One-Time Password (OTP) to access your CyberLearnix account. Use the code below to complete your verification:</p>
+            
+            <div class="otp-container">
+                <div class="otp-label">Your Verification Code</div>
+                <div class="otp-code">{{OTP_CODE}}</div>
+                <p style="margin: 0; color: #666; font-size: 14px;">Enter this code in the application</p>
+            </div>
+            
+            <div class="expiry-info">
+                <strong>⏰ Important:</strong> This code will expire in <strong>5 minutes</strong> for your security.
+            </div>
+            
+            <div class="security-tips">
+                <h3>🛡️ Security Tips</h3>
+                <ul>
+                    <li>Never share this code with anyone</li>
+                    <li>CyberLearnix will never ask for your OTP via phone or email</li>
+                    <li>If you didn't request this code, please ignore this email</li>
+                    <li>For security, this code can only be used once</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ Security Notice:</strong>
+                If you didn't request this OTP, your account may be compromised. Please contact our support team immediately.
+            </div>
+            
+            <p>If you're having trouble with the code, you can request a new one from the login page.</p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>CyberLearnix Private Limited</strong></p>
+            <p>📧 support@cyberlearnix.com | 🌐 www.cyberlearnix.com</p>
+            <p>📱 +1 (555) 123-4567</p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                This is an automated message. Please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

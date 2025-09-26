@@ -1,0 +1,704 @@
+{
+	"info": {
+		"_postman_id": "lms-student-service-collection",
+		"name": "LMS Student Service API",
+		"description": "Comprehensive API collection for testing LMS Student Service endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "student_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "course_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "module_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "quiz_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "assignment_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "certificate_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "review_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "message_id",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login - Test User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"    pm.collectionVariables.set('student_id', response.userId);",
+									"    console.log('JWT Token saved:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"test123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Instructor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"instructor@example.com\",\n    \"password\": \"instructor123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enrollment APIs",
+			"item": [
+				{
+					"name": "Get Enrolled Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll in Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": 4,\n    \"notes\": \"Interested in learning React\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/4/enroll",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "4", "enroll"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unenroll from Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/4",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "4"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Progress APIs",
+			"item": [
+				{
+					"name": "Get Course Progress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/progress",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "progress"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course Progress",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{course_id}},\n    \"type\": \"COURSE\",\n    \"status\": \"IN_PROGRESS\",\n    \"completionPercentage\": 80.0,\n    \"timeSpentMinutes\": 150,\n    \"notes\": \"Completed chapter 4\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/progress",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "progress"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Module Progress",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{course_id}},\n    \"moduleId\": {{module_id}},\n    \"type\": \"MODULE\",\n    \"status\": \"COMPLETED\",\n    \"completionPercentage\": 100.0,\n    \"timeSpentMinutes\": 120,\n    \"notes\": \"Module completed successfully\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/progress",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "progress"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lesson Progress",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{course_id}},\n    \"moduleId\": {{module_id}},\n    \"lessonId\": 1,\n    \"type\": \"LESSON\",\n    \"status\": \"COMPLETED\",\n    \"completionPercentage\": 100.0,\n    \"timeSpentMinutes\": 45,\n    \"notes\": \"Lesson completed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/progress",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "progress"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Overall Progress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/progress/overall",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "progress", "overall"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quiz APIs",
+			"item": [
+				{
+					"name": "Get Quizzes for Module",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/modules/{{module_id}}/quiz",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "modules", "{{module_id}}", "quiz"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Quiz",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quizId\": {{quiz_id}},\n    \"answers\": {\n        \"1\": \"1\",\n        \"2\": \"true\"\n    },\n    \"notes\": \"Quiz completed successfully\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/modules/{{module_id}}/quiz/{{quiz_id}}/submit",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "modules", "{{module_id}}", "quiz", "{{quiz_id}}", "submit"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quiz Results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/quizzes/results",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "quizzes", "results"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assignment APIs",
+			"item": [
+				{
+					"name": "Get Assignments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/assignments",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "assignments"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Assignment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignmentId\": {{assignment_id}},\n    \"submissionText\": \"I have completed the Java Calculator project. The application includes all required arithmetic operations with proper input validation and error handling. The code is well-documented and follows Java best practices.\",\n    \"notes\": \"Please review my implementation and provide feedback.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/assignments/{{assignment_id}}/submit",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "assignments", "{{assignment_id}}", "submit"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Assignment Submissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/assignments/submissions",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "assignments", "submissions"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Certificate APIs",
+			"item": [
+				{
+					"name": "Get All Certificates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/certificates",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "certificates"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Certificate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/certificates/{{certificate_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "certificates", "{{certificate_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Certificate (Public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/certificates/verify/VERIFY-1234567890",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "certificates", "verify", "VERIFY-1234567890"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review APIs",
+			"item": [
+				{
+					"name": "Add Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{course_id}},\n    \"rating\": 5,\n    \"title\": \"Excellent Course!\",\n    \"comment\": \"This course exceeded my expectations. The instructor was knowledgeable, the materials were well-structured, and the practical exercises were very helpful. I highly recommend this course to anyone interested in learning Java programming.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/reviews",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "reviews"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{course_id}},\n    \"rating\": 4,\n    \"title\": \"Good Course with Minor Issues\",\n    \"comment\": \"Updated review: The course is good overall, but I found some sections could be explained better. Still recommend it for beginners.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/reviews/{{review_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "reviews", "{{review_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/reviews/{{review_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "reviews", "{{review_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/reviews",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "reviews"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Announcement APIs",
+			"item": [
+				{
+					"name": "Get All Announcements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/announcements",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "announcements"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course Announcements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/announcements",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "announcements"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message APIs",
+			"item": [
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "messages"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/courses/{{course_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "courses", "{{course_id}}", "messages"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Message as Read",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/messages/{{message_id}}/read",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "messages", "{{message_id}}", "read"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unread Message Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/messages/unread-count",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "messages", "unread-count"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard & Analytics APIs",
+			"item": [
+				{
+					"name": "Get Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "dashboard"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Learning Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/{{student_id}}/stats",
+							"host": ["{{base_url}}"],
+							"path": ["students", "{{student_id}}", "stats"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": ["{{base_url}}"],
+							"path": ["actuator", "health"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Application Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/info",
+							"host": ["{{base_url}}"],
+							"path": ["actuator", "info"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

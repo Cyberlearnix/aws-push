@@ -1,0 +1,11 @@
+rootProject.name = 'cyber-lms-microservices'
+
+include 'api-gateway'
+include 'user-service'
+include 'eureka-server'
+include 'config-server'
+include 'instructor-service'
+include 'student_service'
+include 'course-service'
+include 'order-service'
+include 'payment-service'
