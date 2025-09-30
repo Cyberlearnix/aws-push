@@ -5,19 +5,18 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+          <entry name="$PROJECT_DIR$/../lms/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
         <module name="cyber-lms-microservices.config-server.main" />
-        <module name="cyber-lms-microservices.course-service.main" />
-        <module name="cyber-lms-microservices.eureka-server.main" />
-        <module name="cyber-lms-microservices.order-service.main" />
         <module name="cyber-lms-microservices.instructor-service.main" />
         <module name="cyber-lms-microservices.student_service.main" />
         <module name="cyber-lms-microservices.user-service.main" />
-        <module name="cyber-lms-microservices.api-gateway.main" />
-        <module name="cyber-lms-microservices.payment-service.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cyber-lms-microservices.main" target="17" />
+      <module name="cyber-lms-microservices.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

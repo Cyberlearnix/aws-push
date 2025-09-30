@@ -3,6 +3,7 @@ package com.userservice.userservice.service;
 import com.userservice.userservice.dto.OtpVerificationRequestDTO;
 import com.userservice.userservice.dto.UpdateUserRequestDTO;
 import com.userservice.userservice.dto.UserPublicDTO;
+import com.userservice.userservice.dto.UserBasicDTO;
 import com.userservice.userservice.entity.UserEntity;
 import com.userservice.userservice.enums.UserRole;
 import com.userservice.userservice.repository.UserRepository;
@@ -131,6 +132,17 @@ public class UserService {
                 .role(user.getRole())
                 .build()
         ).toList();
+    }
+
+    public List<UserBasicDTO> getAllUsersBasic() {
+        List<UserEntity> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> UserBasicDTO.builder()
+                        .id(user.getId())
+                        .fullName(user.getFullName())
+                        .email(user.getEmail())
+                        .build())
+                .toList();
     }
 
     public UserEntity updateUser(UUID userId, UpdateUserRequestDTO dto) {

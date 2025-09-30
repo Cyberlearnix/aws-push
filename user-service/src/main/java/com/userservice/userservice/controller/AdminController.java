@@ -3,6 +3,7 @@ package com.userservice.userservice.controller;
 import com.userservice.userservice.dto.AdminCreateUserRequestDTO;
 import com.userservice.userservice.dto.AdminUpdateUserRequestDTO;
 import com.userservice.userservice.dto.UserPublicDTO;
+import com.userservice.userservice.dto.UserBasicDTO;
 import com.userservice.userservice.entity.UserEntity;
 import com.userservice.userservice.enums.UserRole;
 import com.userservice.userservice.service.UserService;
@@ -30,6 +31,14 @@ public class AdminController {
     @GetMapping("/all-users-details")
     public ResponseEntity<?> getAllUsers() {
         List<UserPublicDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(Map.of("success", true, "count", users.size(), "users", users));
+    }
+
+    // 1b. GET /admin/users-basic → Get all users with only id, name, email
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/users-basic")
+    public ResponseEntity<?> getAllUsersBasic() {
+        List<UserBasicDTO> users = userService.getAllUsersBasic();
         return ResponseEntity.ok(Map.of("success", true, "count", users.size(), "users", users));
     }
 
