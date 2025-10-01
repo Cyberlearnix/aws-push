@@ -1,12 +1,9 @@
-# Build artifacts
-build/
-target/
-*.jar
-*.war
+# Ignore all jars except the one we need
+!instructor-service/build/libs/*.jar
 
-# Gradle
-.gradle/
-gradle-wrapper.jar
+# Other ignores
+build/
+*.jar
 
 # IDE files
 .idea/

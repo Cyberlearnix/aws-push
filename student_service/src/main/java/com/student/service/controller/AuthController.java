@@ -35,7 +35,7 @@ public class AuthController {
         
         LoginResponse response = new LoginResponse();
         response.setToken(token);
-        response.setUserId(student.getId());
+        response.setUserId(student.getId().toString());
         response.setEmail(student.getEmail());
         response.setRole(student.getRole().name());
         response.setFirstName(student.getFirstName());
@@ -58,7 +58,7 @@ public class AuthController {
     
     public static class LoginResponse {
         private String token;
-        private Long userId;
+        private String userId;
         private String email;
         private String role;
         private String firstName;
@@ -67,8 +67,8 @@ public class AuthController {
         // Getters and setters
         public String getToken() { return token; }
         public void setToken(String token) { this.token = token; }
-        public Long getUserId() { return userId; }
-        public void setUserId(Long userId) { this.userId = userId; }
+        public String getUserId() { return userId; }
+        public void setUserId(String userId) { this.userId = userId; }
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
         public String getRole() { return role; }

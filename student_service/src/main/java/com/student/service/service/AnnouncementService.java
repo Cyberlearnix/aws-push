@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +27,14 @@ public class AnnouncementService {
     private final StudentRepository studentRepository;
     private final EnrollmentRepository enrollmentRepository;
     
-    public List<AnnouncementResponse> getAnnouncements(Long studentId) {
+    public List<AnnouncementResponse> getAnnouncements(UUID studentId) {
         log.info("Fetching announcements for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
         
         // Get all course IDs the student is enrolled in
-        List<Long> enrolledCourseIds = enrollmentRepository.findActiveEnrollmentsByStudentId(studentId)
+        List<UUID> enrolledCourseIds = enrollmentRepository.findActiveEnrollmentsByStudentId(studentId)
                 .stream()
                 .map(enrollment -> enrollment.getCourseId())
                 .collect(Collectors.toList());
@@ -51,7 +52,7 @@ public class AnnouncementService {
                 .collect(Collectors.toList());
     }
     
-    public List<AnnouncementResponse> getAnnouncementsForCourse(Long studentId, Long courseId) {
+    public List<AnnouncementResponse> getAnnouncementsForCourse(UUID studentId, UUID courseId) {
         log.info("Fetching announcements for student {} in course {}", studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -72,13 +73,13 @@ public class AnnouncementService {
     
     private AnnouncementResponse mapToResponse(Announcement announcement) {
         AnnouncementResponse response = new AnnouncementResponse();
-        response.setId(announcement.getId());
-        response.setCourseId(announcement.getCourseId());
-        response.setInstructorId(announcement.getInstructorId());
+        response.setId(announcement.getId().toString());
+        response.setCourseId(announcement.getCourseId().toString());
+        response.setInstructorId(announcement.getInstructorId().toString());
         response.setTitle(announcement.getTitle());
         response.setContent(announcement.getContent());
-        response.setType(announcement.getType());
-        response.setStatus(announcement.getStatus());
+        response.setType(announcement.getType().name());
+        response.setStatus(announcement.getStatus().name());
         response.setPublishedAt(announcement.getPublishedAt());
         response.setExpiresAt(announcement.getExpiresAt());
         response.setIsImportant(announcement.getIsImportant());

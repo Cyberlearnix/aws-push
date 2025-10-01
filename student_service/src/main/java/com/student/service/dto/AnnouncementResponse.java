@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AnnouncementResponse {
     
-    private Long id;
-    private Long courseId;
+    private String id;
+    private String courseId;
     private String courseName;
-    private Long instructorId;
+    private String instructorId;
     private String instructorName;
     private String title;
     private String content;
-    private Announcement.AnnouncementType type;
-    private Announcement.AnnouncementStatus status;
+    private String type;
+    private String status;
     private LocalDateTime publishedAt;
     private LocalDateTime expiresAt;
     private Boolean isImportant;

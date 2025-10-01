@@ -38,10 +38,11 @@ public class AssignmentService {
     private static final String UPLOAD_DIR = "uploads/assignments/";
     
     @Transactional(readOnly = true)
-    public List<Assignment> getAssignments(Long studentId) {
+    public List<Assignment> getAssignments(UUID studentId) {
         log.info("Fetching assignments for student {}", studentId);
         
-        Student student = studentRepository.findActiveById(studentId)
+        // Verify student exists
+        studentRepository.findActiveById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
         
         // Get all assignments for courses the student is enrolled in
@@ -49,7 +50,7 @@ public class AssignmentService {
         return assignmentRepository.findAll();
     }
     
-    public AssignmentSubmissionResponse submitAssignment(Long studentId, Long assignmentId, AssignmentSubmissionRequest request) {
+    public AssignmentSubmissionResponse submitAssignment(UUID studentId, UUID assignmentId, AssignmentSubmissionRequest request) {
         log.info("Submitting assignment {} for student {}", assignmentId, studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -109,10 +110,11 @@ public class AssignmentService {
     }
     
     @Transactional(readOnly = true)
-    public List<AssignmentSubmissionResponse> getAssignmentSubmissions(Long studentId) {
+    public List<AssignmentSubmissionResponse> getAssignmentSubmissions(UUID studentId) {
         log.info("Fetching assignment submissions for student {}", studentId);
         
-        Student student = studentRepository.findActiveById(studentId)
+        // Verify student exists
+        studentRepository.findActiveById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
         
         List<AssignmentSubmission> submissions = assignmentSubmissionRepository.findByStudentId(studentId);
@@ -122,48 +124,36 @@ public class AssignmentService {
                 .collect(Collectors.toList());
     }
     
-    private String saveUploadedFile(MultipartFile file, Long studentId, Long assignmentId) throws IOException {
+    private String saveUploadedFile(MultipartFile file, UUID studentId, UUID assignmentId) throws IOException {
         // Create upload directory if it doesn't exist
-        Path uploadPath = Paths.get(UPLOAD_DIR);
+        Path uploadPath = Paths.get(UPLOAD_DIR + studentId.toString() + "/" + assignmentId.toString());
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
         
-        // Generate unique filename
-        String originalFileName = file.getOriginalFilename();
-        String fileExtension = originalFileName != null ? 
-                originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
-        String fileName = "student_" + studentId + "_assignment_" + assignmentId + "_" + 
-                UUID.randomUUID().toString() + fileExtension;
-        
         // Save file
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath);
         
-        return fileName;
+        return filePath.toString();
     }
     
     private AssignmentSubmissionResponse mapToResponse(AssignmentSubmission submission) {
         AssignmentSubmissionResponse response = new AssignmentSubmissionResponse();
-        response.setId(submission.getId());
-        response.setStudentId(submission.getStudent().getId());
-        response.setAssignmentId(submission.getAssignment().getId());
-        response.setAssignmentTitle(submission.getAssignment().getTitle());
-        response.setStatus(submission.getStatus());
-        response.setAttemptNumber(submission.getAttemptNumber());
+        response.setId(submission.getId().toString());
+        response.setStudentId(submission.getStudent().getId().toString());
+        response.setAssignmentId(submission.getAssignment().getId().toString());
         response.setSubmissionText(submission.getSubmissionText());
-        response.setFileName(submission.getFileName());
-        response.setFileSize(submission.getFileSize());
+        response.setStatus(submission.getStatus().name());
+        response.setAttemptNumber(submission.getAttemptNumber());
         response.setSubmittedAt(submission.getSubmittedAt());
         response.setGradedAt(submission.getGradedAt());
         response.setScore(submission.getScore());
-        response.setPercentage(submission.getPercentage());
-        response.setGrade(submission.getGrade());
         response.setFeedback(submission.getFeedback());
         response.setIsLate(submission.getIsLate());
-        response.setIsPlagiarized(submission.getIsPlagiarized());
-        response.setCreatedAt(submission.getCreatedAt());
-        response.setUpdatedAt(submission.getUpdatedAt());
+        response.setFileName(submission.getFileName());
+        response.setFileSize(submission.getFileSize());
         return response;
     }
 }

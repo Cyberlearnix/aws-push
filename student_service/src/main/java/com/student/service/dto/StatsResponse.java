@@ -12,7 +12,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class StatsResponse {
     
-    private Long studentId;
+    private String studentId;
     private String studentName;
     private Integer totalCoursesEnrolled;
     private Integer totalCoursesCompleted;
@@ -23,7 +23,7 @@ public class StatsResponse {
     private Double averageQuizScore;
     private Double averageAssignmentScore;
     private Integer totalTimeSpentMinutes;
-    private Integer totalTimeSpentHours;
+    private Double totalTimeSpentHours;
     private LocalDateTime firstEnrollmentDate;
     private LocalDateTime lastActivityDate;
     private Map<String, Integer> coursesByCategory;

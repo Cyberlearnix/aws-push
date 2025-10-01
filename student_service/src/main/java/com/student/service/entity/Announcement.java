@@ -9,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "announcements")
@@ -19,14 +21,19 @@ import java.time.LocalDateTime;
 public class Announcement {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID id;
     
-    @Column(name = "course_id", nullable = false)
-    private Long courseId;
+    @Column(name = "course_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID courseId;
     
-    @Column(name = "instructor_id", nullable = false)
-    private Long instructorId;
+    @Column(name = "instructor_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID instructorId;
     
     @Column(nullable = false)
     private String title;

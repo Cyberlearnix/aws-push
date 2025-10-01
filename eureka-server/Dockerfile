@@ -1,37 +1,11 @@
-# Use OpenJDK 17 as base image
+# eureka-server/Dockerfile
 FROM openjdk:17-jdk-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Copy the pre-built JAR (build it locally first)
+COPY build/libs/eureka-server-0.0.1-SNAPSHOT.jar ./eureka-server.jar
 
-# Copy Gradle wrapper and build files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-
-# Copy eureka-server specific files
-COPY eureka-server/build.gradle ./eureka-server/
-COPY eureka-server/src ./eureka-server/src
-
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Build the application
-RUN ./gradlew :eureka-server:build -x test
-
-# Copy the built JAR file
-RUN cp eureka-server/build/libs/*.jar app.jar
-
-# Expose the port
 EXPOSE 8761
 
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8761/actuator/health || exit 1
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "eureka-server.jar"]

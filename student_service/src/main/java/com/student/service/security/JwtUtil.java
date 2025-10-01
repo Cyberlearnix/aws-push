@@ -5,16 +5,20 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component
-public class JwtUtil {
+public class JwtUtil implements Serializable {
+    private static final long serialVersionUID = -2550185165626007488L;
     
     @Value("${jwt.secret}")
     private String secret;
@@ -35,10 +39,10 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
     
-    public String generateToken(String username, String role, Long userId) {
+    public String generateToken(String username, String role, UUID userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
-        claims.put("userId", userId);
+        claims.put("userId", userId.toString());
         return createToken(claims, username);
     }
     
@@ -47,14 +51,14 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
     
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
     
     public String extractUsername(String token) {
@@ -65,16 +69,20 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
     
-    public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));
+    public UUID getUserIdFromToken(String token) {
+        try {
+            String userIdStr = extractClaim(token, claims -> claims.get("userId", String.class));
+            return userIdStr != null ? UUID.fromString(userIdStr) : null;
+        } catch (Exception e) {
+            return null; // gracefully handle absence or type mismatch
+        }
     }
 
     public Long extractUserId(String token) {
-        // Tokens from user-service may not include numeric userId claim; they use subject (UUID) and an email claim
         try {
-            Long val = extractClaim(token, claims -> claims.get("userId", Long.class));
-            return val;
-        } catch (Exception ignored) {
+            UUID userId = getUserIdFromToken(token);
+            return userId != null ? userId.getMostSignificantBits() : null;
+        } catch (Exception e) {
             return null; // gracefully handle absence or type mismatch
         }
     }

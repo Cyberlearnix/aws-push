@@ -24,7 +24,7 @@ public class EmailAuthService {
     private final OtpCacheService otpCacheService;
     private final UserService userService;
 
-    private static final String ADMIN_EMAIL = "cyberlearnixprivatelimited@gmail.com";
+    private static final String ADMIN_EMAIL = "cyberlearnix@gmail.com";
     private static final String ADMIN_PASSWORD = "Cyberlearnix$179";
 
     // ✅ 1. Send OTP to email

@@ -8,7 +8,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "certificates")
@@ -19,15 +21,20 @@ import java.time.LocalDateTime;
 public class Certificate {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(updatable = false, nullable = false)
+    private UUID id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     
-    @Column(name = "course_id", nullable = false)
-    private Long courseId;
+    @Column(name = "course_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID courseId;
     
     @Column(nullable = false, unique = true)
     private String certificateNumber;

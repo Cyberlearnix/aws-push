@@ -1,37 +1,10 @@
-# Use OpenJDK 17 as base image
 FROM openjdk:17-jdk-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Copy the JAR from repo root
+COPY instructor-service/build/libs/instructor-service-0.0.1-SNAPSHOT.jar ./instructor-service.jar
 
-# Copy Gradle wrapper and build files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
+EXPOSE 8082
 
-# Copy instructor-service specific files
-COPY instructor-service/build.gradle ./instructor-service/
-COPY instructor-service/src ./instructor-service/src
-
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Build the application
-RUN ./gradlew :instructor-service:build -x test
-
-# Copy the built JAR file
-RUN cp instructor-service/build/libs/*.jar app.jar
-
-# Expose the port
-EXPOSE 8083
-
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8083/actuator/health || exit 1
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "instructor-service.jar"]

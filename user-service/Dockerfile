@@ -1,37 +1,11 @@
-# Use OpenJDK 17 as base image
 FROM openjdk:17-jdk-slim
-
-# Set working directory
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Copy the pre-built JAR
+COPY user-service/build/libs/user-service-0.0.1-SNAPSHOT.jar ./user-service.jar
 
-# Copy Gradle wrapper and build files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-
-# Copy user-service specific files
-COPY user-service/build.gradle ./user-service/
-COPY user-service/src ./user-service/src
-
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Build the application
-RUN ./gradlew :user-service:build -x test
-
-# Copy the built JAR file
-RUN cp user-service/build/libs/*.jar app.jar
-
-# Expose the port
+# Expose the port your service runs on
 EXPOSE 8081
 
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8081/actuator/health || exit 1
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the JAR
+ENTRYPOINT ["java", "-jar", "user-service.jar"]

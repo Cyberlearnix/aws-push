@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/students/{id}")
@@ -18,7 +19,7 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
     
     @GetMapping("/announcements")
-    public ResponseEntity<List<AnnouncementResponse>> getAnnouncements(@PathVariable Long id) {
+    public ResponseEntity<List<AnnouncementResponse>> getAnnouncements(@PathVariable UUID id) {
         log.info("Fetching announcements for student {}", id);
         
         List<AnnouncementResponse> response = announcementService.getAnnouncements(id);
@@ -27,8 +28,8 @@ public class AnnouncementController {
     
     @GetMapping("/courses/{courseId}/announcements")
     public ResponseEntity<List<AnnouncementResponse>> getAnnouncementsForCourse(
-            @PathVariable Long id,
-            @PathVariable Long courseId) {
+            @PathVariable UUID id,
+            @PathVariable UUID courseId) {
         
         log.info("Fetching announcements for student {} in course {}", id, courseId);
         

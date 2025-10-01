@@ -1,37 +1,31 @@
-# Use OpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
-
-# Set working directory
+# Stage 1: Build
+FROM openjdk:17-jdk-slim AS builder
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Copy Gradle wrapper and build files
+# Copy root Gradle wrapper and configs
 COPY gradlew .
 COPY gradle gradle
-COPY build.gradle .
 COPY settings.gradle .
+COPY build.gradle .
 
-# Copy api-gateway specific files
-COPY api-gateway/build.gradle ./api-gateway/
-COPY api-gateway/src ./api-gateway/src
+# Copy all modules
+COPY api-gateway ./api-gateway
+COPY user-service ./user-service
+COPY order-service ./order-service
+# ... add other modules as needed
 
 # Make gradlew executable
 RUN chmod +x ./gradlew
 
-# Build the application
-RUN ./gradlew :api-gateway:build -x test
+# Build API Gateway module only
+RUN ./gradlew :api-gateway:bootJar -x test --no-daemon --stacktrace
 
-# Copy the built JAR file
-RUN cp api-gateway/build/libs/*.jar app.jar
+# Stage 2: Runtime
+FROM openjdk:17-jdk-slim
+WORKDIR /app
 
-# Expose the port
+# Copy the built jar from builder
+COPY --from=builder /app/api-gateway/build/libs/api-gateway-*.jar ./api-gateway.jar
+
 EXPOSE 8080
-
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "api-gateway.jar"]

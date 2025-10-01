@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AssignmentSubmissionResponse {
     
-    private Long id;
-    private Long studentId;
-    private Long assignmentId;
+    private String id;
+    private String studentId;
+    private String assignmentId;
     private String assignmentTitle;
-    private AssignmentSubmission.SubmissionStatus status;
+    private String status;
     private Integer attemptNumber;
     private String submissionText;
     private String fileName;

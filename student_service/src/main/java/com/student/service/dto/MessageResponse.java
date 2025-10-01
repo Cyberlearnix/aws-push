@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MessageResponse {
     
-    private Long id;
-    private Long studentId;
+    private String id;
+    private String studentId;
     private String studentName;
-    private Long instructorId;
+    private String instructorId;
     private String instructorName;
-    private Long courseId;
+    private String courseId;
     private String courseName;
     private String subject;
     private String content;
@@ -25,7 +25,7 @@ public class MessageResponse {
     private Message.MessageStatus status;
     private LocalDateTime readAt;
     private LocalDateTime repliedAt;
-    private Long parentMessageId;
+    private String parentMessageId;
     private String attachmentPath;
     private String attachmentName;
     private LocalDateTime createdAt;

@@ -1,6 +1,7 @@
 package com.student.service.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "messages")
@@ -19,17 +21,22 @@ import java.time.LocalDateTime;
 public class Message {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID id;
     
-    @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    @Column(name = "student_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID studentId;
     
-    @Column(name = "instructor_id", nullable = false)
-    private Long instructorId;
+    @Column(name = "instructor_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID instructorId;
     
-    @Column(name = "course_id", nullable = false)
-    private Long courseId;
+    @Column(name = "course_id", nullable = false, columnDefinition = "BINARY(16)")
+    private UUID courseId;
     
     @Column(nullable = false)
     private String subject;
@@ -51,8 +58,8 @@ public class Message {
     @Column
     private LocalDateTime repliedAt;
     
-    @Column
-    private Long parentMessageId;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID parentMessageId;
     
     @Column
     private String attachmentPath;

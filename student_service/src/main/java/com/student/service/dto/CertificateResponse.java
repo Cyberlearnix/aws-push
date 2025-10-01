@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CertificateResponse {
     
-    private Long id;
-    private Long studentId;
-    private Long courseId;
+    private String id;
+    private String studentId;
+    private String courseId;
     private String certificateNumber;
     private String courseName;
     private String studentName;
@@ -24,7 +24,7 @@ public class CertificateResponse {
     private String grade;
     private String filePath;
     private String verificationCode;
-    private Certificate.CertificateStatus status;
+    private String status;
     private String metadata;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

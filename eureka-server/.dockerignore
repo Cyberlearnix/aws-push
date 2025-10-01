@@ -34,3 +34,6 @@ build/reports/
 # Git
 .git/
 .gitignore
+
+# allow built jars for docker build
+!build/libs/eureka-server-*.jar

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,7 @@ public class MessageService {
     private final StudentRepository studentRepository;
     
     @Transactional(readOnly = true)
-    public List<MessageResponse> getMessages(Long studentId) {
+    public List<MessageResponse> getMessages(UUID studentId) {
         log.info("Fetching messages for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -39,7 +40,7 @@ public class MessageService {
     }
     
     @Transactional(readOnly = true)
-    public List<MessageResponse> getMessagesForCourse(Long studentId, Long courseId) {
+    public List<MessageResponse> getMessagesForCourse(UUID studentId, UUID courseId) {
         log.info("Fetching messages for student {} in course {}", studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -52,7 +53,7 @@ public class MessageService {
                 .collect(Collectors.toList());
     }
     
-    public void markMessageAsRead(Long studentId, Long messageId) {
+    public void markMessageAsRead(UUID studentId, UUID messageId) {
         log.info("Marking message {} as read for student {}", messageId, studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -76,28 +77,52 @@ public class MessageService {
     }
     
     @Transactional(readOnly = true)
-    public Long getUnreadMessageCount(Long studentId) {
+    public Long getUnreadMessageCount(UUID studentId) {
         log.info("Getting unread message count for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+                
         return messageRepository.countUnreadMessagesByStudentId(studentId);
     }
     
     private MessageResponse mapToResponse(Message message) {
+        if (message == null) {
+            return null;
+        }
+        
         MessageResponse response = new MessageResponse();
-        response.setId(message.getId());
-        response.setStudentId(message.getStudentId());
-        response.setInstructorId(message.getInstructorId());
-        response.setCourseId(message.getCourseId());
+        response.setId(message.getId() != null ? message.getId().toString() : null);
+        response.setStudentId(message.getStudentId() != null ? message.getStudentId().toString() : null);
+        
+        // Set student name if student entity is available
+        if (message.getStudent() != null) {
+            String studentName = message.getStudent().getFirstName();
+            if (message.getStudent().getLastName() != null) {
+                studentName += " " + message.getStudent().getLastName();
+            }
+            response.setStudentName(studentName);
+        }
+        
+        response.setInstructorId(message.getInstructorId() != null ? message.getInstructorId().toString() : null);
+        response.setInstructorName(message.getInstructorName());
+        response.setCourseId(message.getCourseId() != null ? message.getCourseId().toString() : null);
         response.setSubject(message.getSubject());
         response.setContent(message.getContent());
-        response.setType(message.getType());
-        response.setStatus(message.getStatus());
+        
+        // Handle enum to string conversion
+        if (message.getType() != null) {
+            response.setType(message.getType().name());
+        }
+        
+        if (message.getStatus() != null) {
+            response.setStatus(message.getStatus().name());
+        }
+        
         response.setReadAt(message.getReadAt());
         response.setRepliedAt(message.getRepliedAt());
-        response.setParentMessageId(message.getParentMessageId());
+        response.setParentMessageId(message.getParentMessageId() != null ? 
+                                  message.getParentMessageId().toString() : null);
         response.setAttachmentPath(message.getAttachmentPath());
         response.setAttachmentName(message.getAttachmentName());
         response.setCreatedAt(message.getCreatedAt());

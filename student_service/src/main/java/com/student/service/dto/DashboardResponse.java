@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DashboardResponse {
     
-    private Long studentId;
+    private String studentId;
     private String studentName;
     private String studentEmail;
     private Integer totalEnrolledCourses;

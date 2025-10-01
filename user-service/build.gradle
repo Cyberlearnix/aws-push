@@ -1,21 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.2.4'
 }
 
 group = 'com.userservice'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-ext {
-    set('springCloudVersion', "2023.0.1")
-}
 
 repositories {
     mavenCentral()
@@ -23,7 +13,8 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.4"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
     }
 }
 
@@ -71,4 +62,5 @@ bootJar {
 
 test {
     useJUnitPlatform()
+    systemProperty 'spring.profiles.active', 'test'
 }

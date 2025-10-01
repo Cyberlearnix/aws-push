@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/students/{id}")
@@ -18,7 +19,7 @@ public class CertificateController {
     private final CertificateService certificateService;
     
     @GetMapping("/certificates")
-    public ResponseEntity<List<CertificateResponse>> getCertificates(@PathVariable Long id) {
+    public ResponseEntity<List<CertificateResponse>> getCertificates(@PathVariable UUID id) {
         log.info("Fetching certificates for student {}", id);
         
         List<CertificateResponse> response = certificateService.getCertificates(id);
@@ -27,8 +28,8 @@ public class CertificateController {
     
     @GetMapping("/certificates/{certificateId}")
     public ResponseEntity<CertificateResponse> getCertificate(
-            @PathVariable Long id,
-            @PathVariable Long certificateId) {
+            @PathVariable UUID id,
+            @PathVariable UUID certificateId) {
         
         log.info("Fetching certificate {} for student {}", certificateId, id);
         

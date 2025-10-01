@@ -7,9 +7,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, UUID> {
     
     Optional<Student> findByEmail(String email);
     
@@ -19,7 +20,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findActiveByEmail(@Param("email") String email);
     
     @Query("SELECT s FROM Student s WHERE s.id = :id AND s.isActive = true")
-    Optional<Student> findActiveById(@Param("id") Long id);
+    Optional<Student> findActiveById(@Param("id") UUID id);
 }
 
 

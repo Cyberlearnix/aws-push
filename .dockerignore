@@ -1,0 +1,3 @@
+
+# allow instructor-service jar for docker build
+!instructor-service/build/libs/*.jar

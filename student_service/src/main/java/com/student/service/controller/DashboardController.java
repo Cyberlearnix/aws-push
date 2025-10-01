@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/students/{id}")
 @RequiredArgsConstructor
@@ -17,18 +19,18 @@ public class DashboardController {
     private final DashboardService dashboardService;
     
     @GetMapping("/dashboard")
-    public ResponseEntity<DashboardResponse> getDashboard(@PathVariable Long id) {
-        log.info("Fetching dashboard for student {}", id);
+    public ResponseEntity<DashboardResponse> getDashboard(@PathVariable("id") UUID studentId) {
+        log.info("Fetching dashboard for student {}", studentId);
         
-        DashboardResponse response = dashboardService.getDashboard(id);
+        DashboardResponse response = dashboardService.getDashboard(studentId);
         return ResponseEntity.ok(response);
     }
     
     @GetMapping("/stats")
-    public ResponseEntity<StatsResponse> getStats(@PathVariable Long id) {
-        log.info("Fetching stats for student {}", id);
+    public ResponseEntity<StatsResponse> getStats(@PathVariable("id") UUID studentId) {
+        log.info("Fetching stats for student {}", studentId);
         
-        StatsResponse response = dashboardService.getStats(id);
+        StatsResponse response = dashboardService.getStats(studentId);
         return ResponseEntity.ok(response);
     }
 }
