@@ -42,6 +42,11 @@ public class AuthService {
 
         var user = userOpt.get();
 
+        // Check if user account is active
+        if (!Boolean.TRUE.equals(user.getIsActive())) {
+            return LoginResult.invalid("Your account has been deactivated. Please contact administrator for assistance.");
+        }
+
         // lockout check
         if (user.getLockoutUntil() != null && Instant.now().isBefore(user.getLockoutUntil())) {
             long mins = Math.max(1, Duration.between(Instant.now(), user.getLockoutUntil()).toMinutes());

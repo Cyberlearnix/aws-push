@@ -8,8 +8,9 @@ import requests
 import json
 import time
 
-BASE_URL = "http://localhost:9090"
-ADMIN_EMAIL = "cyberlearnix@gmail.com"
+BASE_URL = "http://localhost:8081"  # Direct user-service access
+# Alternative: BASE_URL = "http://localhost:8080"  # Through API gateway
+ADMIN_EMAIL = "cyberlearnixprivatelimited@gmail.com"
 
 def test_admin_flow():
     print("🔐 Testing Admin API Flow...")

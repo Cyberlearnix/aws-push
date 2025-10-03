@@ -46,6 +46,15 @@ public class AuthController {
             UUID userId = jwtUtil.extractUserId(refreshToken);
             UserEntity user = userService.getUserById(userId);
 
+            // Check if user account is still active
+            if (!Boolean.TRUE.equals(user.getIsActive())) {
+                return ResponseEntity.status(401).body(Map.of(
+                        "success", false,
+                        "message", "Your account has been deactivated. Please contact administrator for assistance.",
+                        "error", "ACCOUNT_DEACTIVATED"
+                ));
+            }
+
             String newAccess = jwtUtil.generateAccessToken(user);
             return ResponseEntity.ok(Map.of(
                     "success", true,

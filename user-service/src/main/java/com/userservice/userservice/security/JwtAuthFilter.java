@@ -49,14 +49,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
+        String requestId = java.util.UUID.randomUUID().toString().substring(0, 8);
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
+        String remoteAddr = request.getRemoteAddr();
 
-        System.out.println("🔍 JWT Filter - Processing: " + request.getRequestURI());
-        System.out.println("🔍 JWT Filter - Auth Header: " +
-                (authHeader != null ? authHeader.substring(0, Math.min(30, authHeader.length())) + "..." : "null"));
+        System.out.println(String.format("[%s] 🔍 JWT Filter - Processing %s %s from %s", requestId, method, uri, remoteAddr));
+        System.out.println(String.format("[%s] 🔍 JWT Filter - Auth Header: %s", requestId,
+                (authHeader != null ? authHeader.substring(0, Math.min(30, authHeader.length())) + "..." : "null")));
 
         // No token → continue (let security rules decide access)
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("🔍 JWT Filter - No valid Bearer token, continuing...");
+            System.out.println(String.format("[%s] 🔍 JWT Filter - No valid Bearer token, continuing to security chain...", requestId));
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,39 +68,55 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // Extract token string after "Bearer "
         final String token = authHeader.substring(7).trim();
         if (token.isEmpty()) {
-            System.out.println("🔍 JWT Filter - Empty token after Bearer, continuing...");
+            System.out.println(String.format("[%s] 🔍 JWT Filter - Empty token after Bearer, continuing...", requestId));
             filterChain.doFilter(request, response);
             return;
         }
+        
+        System.out.println(String.format("[%s] 🔍 JWT Filter - Extracted token (length: %d)", requestId, token.length()));
 
         try {
+            System.out.println(String.format("[%s] 🔍 JWT Filter - Parsing JWT token claims...", requestId));
             String email = jwtUtil.extractEmail(token);
             String role = jwtUtil.extractRole(token); // e.g., "ADMIN", "STUDENT", etc.
-            System.out.println("🔍 JWT Filter - Extracted email: " + email + ", role: " + role);
+            System.out.println(String.format("[%s] 🔍 JWT Filter - Extracted email: %s, role: %s", requestId, maskEmail(email), role));
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                System.out.println(String.format("[%s] 🔍 JWT Filter - Setting Spring Security authentication...", requestId));
                 var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                System.out.println(String.format("[%s] 🔍 JWT Filter - Granted authorities: %s", requestId, authorities));
+                
                 var authToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("✅ JWT Filter - Authentication set successfully");
+                
+                System.out.println(String.format("[%s] ✅ JWT Filter - Authentication set successfully for user: %s with role: ROLE_%s", requestId, maskEmail(email), role));
             } else {
-                System.out.println("🔍 JWT Filter - Email null or already authenticated");
+                System.out.println(String.format("[%s] 🔍 JWT Filter - Email null or already authenticated (email: %s, auth: %s)", 
+                    requestId, email, SecurityContextHolder.getContext().getAuthentication() != null ? "present" : "null"));
             }
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
-            System.out.println("⚠️ JWT Filter - Token expired: " + e.getMessage());
+            System.out.println(String.format("[%s] ⚠️ JWT Filter - Token expired: %s", requestId, e.getMessage()));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\":\"Token expired\"}");
             return;
         } catch (Exception e) {
-            System.out.println("❌ JWT Filter - Token validation error: " + e.getMessage());
+            System.out.println(String.format("[%s] ❌ JWT Filter - Token validation error: %s", requestId, e.getMessage()));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\":\"Invalid token\"}");
             return;
         }
 
+        System.out.println(String.format("[%s] 🔍 JWT Filter - Continuing to next filter in chain", requestId));
         filterChain.doFilter(request, response);
+    }
+    
+    private String maskEmail(String email) {
+        if (email == null || email.length() <= 3) return email;
+        int atIndex = email.indexOf('@');
+        if (atIndex <= 1) return email;
+        return email.charAt(0) + "***" + email.substring(atIndex);
     }
 }

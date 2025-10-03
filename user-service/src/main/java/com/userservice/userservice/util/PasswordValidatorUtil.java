@@ -3,30 +3,30 @@ package com.userservice.userservice.util;
 public class PasswordValidatorUtil {
 
     // Validates password with rules:
-    // - length > 6
+    // - length >= 8 characters (updated from 6)
     // - contains at least one special character (non-alphanumeric)
     // - must not be the same as the username/fullName
     // - must not be the same as the email or email local-part
     public static void validateOrThrow(String password, String email, String usernameOrFullName) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Password is required");
+            throw new IllegalArgumentException("Password is required and cannot be empty");
         }
 
         String pwd = password.trim();
 
-        if (pwd.length() <= 6) {
-            throw new IllegalArgumentException("Password must be more than 6 characters");
+        if (pwd.length() < 8) {
+            throw new IllegalArgumentException("Password should be minimum 8 characters long (current: " + pwd.length() + " characters)");
         }
 
         if (!containsSpecialCharacter(pwd)) {
-            throw new IllegalArgumentException("Password must contain at least one special character");
+            throw new IllegalArgumentException("Password must contain at least one special character (!@#$%^&*()_+-=[]{}|;:,.<>?)");
         }
 
         // Compare ignoring case and whitespace
         if (usernameOrFullName != null && !usernameOrFullName.isBlank()) {
             String uname = usernameOrFullName.trim();
             if (pwd.equalsIgnoreCase(uname)) {
-                throw new IllegalArgumentException("Password must not be the same as your name or username");
+                throw new IllegalArgumentException("Password cannot be the same as your full name for security reasons");
             }
         }
 
@@ -38,7 +38,7 @@ public class PasswordValidatorUtil {
                 local = e.substring(0, at);
             }
             if (pwd.equalsIgnoreCase(e) || pwd.equalsIgnoreCase(local)) {
-                throw new IllegalArgumentException("Password must not be the same as your email or email name");
+                throw new IllegalArgumentException("Password cannot be the same as your email address for security reasons");
             }
         }
     }

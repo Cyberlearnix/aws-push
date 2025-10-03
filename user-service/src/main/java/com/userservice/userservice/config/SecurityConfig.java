@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 "/api/users/reset-password",  // reset password
                                 "/api/users/{id}",         // get user by id (public)
                                 "/api/users/validate-token", // token validation endpoint
+                                "/api/admin/debug/**",     // debug endpoints
                                 // Swagger & docs
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

@@ -52,8 +52,15 @@ public class EmailAuthController {
         try {
             Map<String, Object> response = emailAuthService.verifyOtp(dto);
             return ResponseEntity.ok(response);
+        } catch (org.springframework.web.server.ResponseStatusException e) {
+            // Handle specific HTTP status exceptions (like 403 FORBIDDEN for deactivated accounts)
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of(
+                    "success", false,
+                    "message", e.getReason(),
+                    "error", "ACCOUNT_STATUS_ERROR"
+            ));
         } catch (Exception e) {
-            // This is a temporary change for debugging
+            // Handle other unexpected errors
             e.printStackTrace();
             return ResponseEntity.status(400).body(Map.of(
                     "success", false,

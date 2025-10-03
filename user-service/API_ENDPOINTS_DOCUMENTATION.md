@@ -193,7 +193,7 @@ POST /api/auth/login-password
 ## 🧪 **Testing with Postman**
 
 1. Import `UserService_API_Collection.postman_collection.json`
-2. Set `base_url` variable to `http://localhost:9090`
+2. Set `base_url` variable to `http://localhost:8080`
 3. Follow the admin login flow to get admin tokens
 4. Test all endpoints with proper authentication
 

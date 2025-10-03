@@ -28,7 +28,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        log.debug("Checking if user exists by email: {}", maskEmail(email));
+        boolean exists = userRepository.existsByEmail(email);
+        log.debug("User exists check for {}: {}", maskEmail(email), exists);
+        return exists;
     }
 
     public boolean isFullyRegistered(String email) {
@@ -62,56 +65,81 @@ public class UserService {
     }
 
     public UserEntity registerUser(String email, String fullName, String phone, String password) {
+        String requestId = UUID.randomUUID().toString().substring(0, 8);
+        log.info("[{}] Starting user registration for email: {}", requestId, maskEmail(email));
+        
         if (email == null || email.isBlank()) {
-            log.error("❌ Cannot register user: Email is null or blank");
+            log.error("[{}] ❌ Cannot register user: Email is null or blank", requestId);
             throw new IllegalArgumentException("Email cannot be null or blank");
         }
 
-        log.debug("📥 Registering user with email={}, fullName={}, phone={}", email, fullName, phone);
+        log.info("[{}] 📥 Registering user - FullName: {}, Phone: {}", requestId, fullName, phone != null ? phone.replaceAll(".(?=.{2})", "*") : "null");
 
+        log.info("[{}] Checking if user already exists", requestId);
         Optional<UserEntity> existingOpt = userRepository.findByEmail(email);
         UserEntity user = existingOpt.orElse(new UserEntity());
+        
+        if (existingOpt.isPresent()) {
+            log.info("[{}] Updating existing user record", requestId);
+        } else {
+            log.info("[{}] Creating new user record", requestId);
+        }
 
         user.setEmail(email);
         user.setFullName(fullName);
         user.setPhone(phone);
+        
+        log.info("[{}] Validating password strength", requestId);
         // Validate password strength and non-equality to email/username
         PasswordValidatorUtil.validateOrThrow(password, email, fullName);
+        
+        log.info("[{}] Encoding password", requestId);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.STUDENT);
-
         user.setEmailVerified(true);
 
+        log.info("[{}] Saving user to database", requestId);
         UserEntity savedUser = userRepository.save(user);
-        log.info("✅ User saved: id={}, email={}, role={}", savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+        log.info("[{}] ✅ User saved successfully - ID: {}, Email: {}, Role: {}", requestId, savedUser.getId(), maskEmail(savedUser.getEmail()), savedUser.getRole());
         return savedUser;
     }
 
     public void registerAdmin(String email, String rawPassword) {
+        String requestId = UUID.randomUUID().toString().substring(0, 8);
+        log.info("[{}] Starting admin registration for email: {}", requestId, maskEmail(email));
+        
+        log.info("[{}] Looking for existing admin user", requestId);
         UserEntity admin = userRepository.findByEmail(email).orElse(new UserEntity());
-
+        boolean isNewAdmin = admin.getId() == null;
+        
+        log.info("[{}] {} admin user", requestId, isNewAdmin ? "Creating new" : "Updating existing");
         admin.setEmail(email);
         admin.setFullName("Admin");
         admin.setPhone("9999999999");
 
         // Only encode and set password if not already set
         if (admin.getPassword() == null || admin.getPassword().isBlank()) {
+            log.info("[{}] Setting new password for admin", requestId);
             admin.setPassword(passwordEncoder.encode(rawPassword));
+        } else {
+            log.info("[{}] Admin already has password, keeping existing", requestId);
         }
 
         // ✅ Always enforce role ADMIN (even if user already exists)
         admin.setRole(UserRole.ADMIN);
-
         admin.setEmailVerified(true);
 
+        log.info("[{}] Saving admin to database", requestId);
         userRepository.save(admin);
-        log.info("✅ Admin registered or updated: email={}, role={}", admin.getEmail(), admin.getRole());
+        log.info("[{}] ✅ Admin registered or updated - Email: {}, Role: {}", requestId, maskEmail(admin.getEmail()), admin.getRole());
     }
 
 
 
     public List<UserPublicDTO> getAllUsers() {
+        log.info("Fetching all users from database");
         List<UserEntity> users = userRepository.findAll();
+        log.info("Found {} users in database", users.size());
 
         return users.stream().map(user -> UserPublicDTO.builder()
                 .id(user.getId() != null ? UUID.fromString(user.getId().toString()) : null)
@@ -192,8 +220,16 @@ public class UserService {
 
 
     public UserEntity getUserByEmail(String email) {
+        log.debug("Fetching user by email: {}", maskEmail(email));
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .map(user -> {
+                    log.debug("User found - ID: {}, Role: {}, Active: {}", user.getId(), user.getRole(), user.getIsActive());
+                    return user;
+                })
+                .orElseThrow(() -> {
+                    log.warn("User not found with email: {}", maskEmail(email));
+                    return new RuntimeException("User not found with email: " + email);
+                });
     }
 
     public UserEntity getUserById(UUID id) {
@@ -253,6 +289,16 @@ public class UserService {
     }
 
     public UserEntity saveUser(UserEntity user) {
-        return userRepository.save(user);
+        log.debug("Saving user - ID: {}, Email: {}, Role: {}", user.getId(), maskEmail(user.getEmail()), user.getRole());
+        UserEntity savedUser = userRepository.save(user);
+        log.debug("User saved successfully - ID: {}", savedUser.getId());
+        return savedUser;
+    }
+    
+    private String maskEmail(String email) {
+        if (email == null || email.length() <= 3) return email;
+        int atIndex = email.indexOf('@');
+        if (atIndex <= 1) return email;
+        return email.charAt(0) + "***" + email.substring(atIndex);
     }
 }
