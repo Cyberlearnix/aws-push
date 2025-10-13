@@ -4,7 +4,15 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
 }
 
-group = 'com.userservice'
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+group = 'com.cyberlearnix.lms'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
@@ -14,7 +22,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.4"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.0"
     }
 }
 
@@ -26,30 +34,28 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     // Redis for caching OTP/session
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    
-    // Spring Cloud
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4'  // Explicit version for Feign
-    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
-    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'  // For bootstrap configuration
-    
-    // Health check dependencies
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    
+
+    // Swagger/OpenAPI documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+    // Feign for service-to-service communication
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4'
+
     // Database
     runtimeOnly 'org.postgresql:postgresql'
-    
+
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-    
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

@@ -20,7 +20,6 @@ public class EmailAuthController {
 
     private final EmailAuthService emailAuthService;
 
-    //  Send OTP with email format & domain validation
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOtp(@RequestBody @Valid EmailRequestDTO dto) {
         try {
@@ -37,6 +36,9 @@ public class EmailAuthController {
             Map<String, Object> response = emailAuthService.sendOtpToEmail(dto);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            // ADD THIS LINE TO SEE THE FULL STACK TRACE
+            e.printStackTrace();
+
             return ResponseEntity.status(500).body(Map.of(
                     "success", false,
                     "message", "Failed to send OTP. Please try again.",
@@ -44,7 +46,6 @@ public class EmailAuthController {
             ));
         }
     }
-
     //  Verify OTP
 
     @PostMapping("/verify-otp")

@@ -28,7 +28,7 @@ public class StudentService {
                         .email("student" + sid + "@example.com")
                         .progressPercent(progress.getOrDefault(key(courseId, sid), 0.0))
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public StudentProgressResponse getStudentProgress(Long courseId, Long studentId) {

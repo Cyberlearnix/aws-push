@@ -1,50 +1,64 @@
 package com.instructor.service.service;
 
+import com.instructor.service.entity.AnnouncementEntity;
+import com.instructor.service.entity.CourseEntity;
+import com.instructor.service.entity.MessageEntity;
+import com.instructor.service.mapper.EntityMapper;
 import com.instructor.service.model.Announcement;
 import com.instructor.service.model.Message;
+import com.instructor.service.repository.AnnouncementRepository;
+import com.instructor.service.repository.CourseRepository;
+import com.instructor.service.repository.MessageRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class CommunicationService {
 
-    private final Map<Long, List<Announcement>> announcements = new ConcurrentHashMap<>();
-    private final Map<Long, List<Message>> messages = new ConcurrentHashMap<>();
-    private final AtomicLong idSeq = new AtomicLong(1);
+    private final AnnouncementRepository announcementRepository;
+    private final MessageRepository messageRepository;
+    private final CourseRepository courseRepository;
+    private final EntityMapper entityMapper;
 
     public Announcement postAnnouncement(Long courseId, String title, String message) {
-        Announcement a = Announcement.builder()
-                .id(idSeq.getAndIncrement())
-                .courseId(courseId)
-                .title(title)
-                .message(message)
-                .createdAt(Instant.now())
-                .build();
-        announcements.computeIfAbsent(courseId, k -> new ArrayList<>()).add(a);
-        return a;
+        CourseEntity course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        
+        AnnouncementEntity announcementEntity = entityMapper.createAnnouncementEntity(courseId, title, message, course);
+        announcementEntity = announcementRepository.save(announcementEntity);
+        
+        return entityMapper.toLegacyAnnouncement(announcementEntity);
     }
 
     public Message sendMessage(Long courseId, String subject, String body) {
-        Message m = Message.builder()
-                .id(idSeq.getAndIncrement())
-                .courseId(courseId)
-                .subject(subject)
-                .message(body)
-                .createdAt(Instant.now())
-                .build();
-        messages.computeIfAbsent(courseId, k -> new ArrayList<>()).add(m);
-        return m;
+        CourseEntity course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        
+        MessageEntity messageEntity = entityMapper.createMessageEntity(courseId, subject, body, course);
+        messageEntity = messageRepository.save(messageEntity);
+        
+        return entityMapper.toLegacyMessage(messageEntity);
     }
 
+    @Transactional(readOnly = true)
     public List<Announcement> listAnnouncements(Long courseId) {
-        return announcements.getOrDefault(courseId, Collections.emptyList());
+        return announcementRepository.findByCourseIdAndIsActiveTrueOrderByCreatedAtDesc(courseId)
+                .stream()
+                .map(entityMapper::toLegacyAnnouncement)
+                .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<Message> listMessages(Long courseId) {
-        return messages.getOrDefault(courseId, Collections.emptyList());
+        return messageRepository.findByCourseIdAndIsActiveTrueOrderByCreatedAtDesc(courseId)
+                .stream()
+                .map(entityMapper::toLegacyMessage)
+                .collect(Collectors.toList());
     }
 }

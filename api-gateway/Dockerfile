@@ -1,30 +1,14 @@
-# Use OpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin 21 JRE Alpine as base image for better security and smaller size
+FROM eclipse-temurin:21-jre-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Install curl for health checks (Alpine uses apk)
+RUN apk add --no-cache curl
 
-# Copy Gradle wrapper and build files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-
-# Copy api-gateway specific files
-COPY api-gateway/build.gradle ./api-gateway/
-COPY api-gateway/src ./api-gateway/src
-
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Build the application
-RUN ./gradlew :api-gateway:build -x test
-
-# Copy the built JAR file (pick the boot jar deterministically)
-RUN cp $(ls api-gateway/build/libs/*-SNAPSHOT.jar | head -n 1) app.jar
+# Copy the executable JAR file (relative path from service directory)
+COPY build/libs/api-gateway-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port
 EXPOSE 8080

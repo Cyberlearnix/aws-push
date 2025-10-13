@@ -12,6 +12,12 @@ import com.userservice.userservice.enums.UserRole;
 import com.userservice.userservice.service.UserService;
 import com.userservice.userservice.service.EmailAuthService;
 import com.userservice.userservice.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +29,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(name = "User Management", description = "APIs for managing user profiles, authentication, and account operations")
 public class UserController {
 
     private final UserService userService;
@@ -31,6 +38,16 @@ public class UserController {
 
     // ✅ Update profile
     @PutMapping("/update")
+    @Operation(
+        summary = "Update user profile",
+        description = "Updates the authenticated user's profile information including personal details, social media links, and biography"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Profile updated successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid request data"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing token")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<?> updateProfile(@RequestBody UpdateUserRequestDTO dto,
                                            HttpServletRequest request) {
         try {
@@ -65,6 +82,16 @@ public class UserController {
 
     // ✅ Delete own account (with OTP verification)
     @DeleteMapping("/delete")
+    @Operation(
+        summary = "Delete own account",
+        description = "Deletes the authenticated user's account after OTP verification for security"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Account deleted successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid OTP or request"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing token")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<?> deleteSelf(@RequestBody OtpVerificationRequestDTO dto,
                                         HttpServletRequest request) {
         try {
@@ -79,7 +106,17 @@ public class UserController {
 
     // ✅ Admin delete any user
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteByAdmin(@PathVariable UUID id,
+    @Operation(
+        summary = "Delete user by admin",
+        description = "Allows admin users to delete any user account (requires ADMIN role)"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+        @ApiResponse(responseCode = "403", description = "Forbidden - Admin access required"),
+        @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<?> deleteByAdmin(@Parameter(description = "User ID to delete") @PathVariable UUID id,
                                            HttpServletRequest request) {
         try {
             String token = extractToken(request);
@@ -98,6 +135,14 @@ public class UserController {
 
     // ✅ Forgot password → send OTP (reuse email-auth)
     @PostMapping("/forgot-password")
+    @Operation(
+        summary = "Request password reset",
+        description = "Sends an OTP to the user's email for password reset. Returns success message regardless of whether email exists for security"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "202", description = "OTP sent successfully (or message indicating email not found)"),
+        @ApiResponse(responseCode = "400", description = "Invalid request format")
+    })
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDTO dto) {
         try {
             // Check if user exists
@@ -123,6 +168,14 @@ public class UserController {
 
     // ✅ Reset password using OTP
     @PostMapping("/reset-password")
+    @Operation(
+        summary = "Reset password with OTP",
+        description = "Resets user password using the OTP sent to their email"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Password reset successful"),
+        @ApiResponse(responseCode = "400", description = "Invalid OTP or request data")
+    })
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequestDTO dto) {
         try {
             userService.resetPassword(dto.getEmail(), dto.getOtpSessionId(), dto.getOtp(), dto.getNewPassword());
@@ -134,6 +187,16 @@ public class UserController {
 
     // ✅ Upload/change profile picture
     @PostMapping("/upload-photo")
+    @Operation(
+        summary = "Upload profile photo",
+        description = "Uploads or updates the user's profile picture"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Photo uploaded successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid photo data"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing token")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<?> uploadPhoto(@RequestBody UploadPhotoRequestDTO dto,
                                          HttpServletRequest request) {
         try {
@@ -151,7 +214,15 @@ public class UserController {
 
     // ✅ Get user profile by id
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id) {
+    @Operation(
+        summary = "Get user profile",
+        description = "Retrieves public profile information for a specific user"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User profile retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<?> getById(@Parameter(description = "User ID") @PathVariable UUID id) {
         try {
             return ResponseEntity.ok(userService.getPublicById(id));
         } catch (Exception e) {

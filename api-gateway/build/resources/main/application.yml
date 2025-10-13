@@ -8,64 +8,72 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
+          enabled: false  # Disable Eureka service discovery
       routes:
         - id: user-service
-          uri: lb://user-service
+          uri: http://localhost:8081
           predicates:
-            - Path=/api/users/**
-            
-        - id: user-service-email-auth
-          uri: lb://user-service
-          predicates:
-            - Path=/api/email-auth/**
-          # Do NOT strip any prefix here because the service controller is mapped to /api/email-auth/**
+            - Path=/api/users/**, /api/email-auth/**, /api/admin/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
 
         - id: student-service
-          uri: lb://student-service
+          uri: http://localhost:8082
           predicates:
             - Path=/api/students/**
           filters:
-            - StripPrefix=1
-        
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
         - id: instructor-service
-          uri: lb://instructor-service
+          uri: http://localhost:8083
           predicates:
             - Path=/api/instructors/**
           filters:
-            - StripPrefix=1
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
 
         - id: course-service
-          uri: lb://course-service
+          uri: http://localhost:8084
           predicates:
             - Path=/api/courses/**
           filters:
-            - StripPrefix=1
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
 
         - id: order-service
-          uri: lb://order-service
+          uri: http://localhost:8085
           predicates:
             - Path=/api/orders/**
           filters:
-            - StripPrefix=1
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
 
         - id: payment-service
-          uri: lb://payment-service
+          uri: http://localhost:8086
           predicates:
             - Path=/api/payments/**
           filters:
-            - StripPrefix=1
-            
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    prefer-ip-address: true
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+
+  redis:
+    host: localhost
+    port: 6379
+
+# Remove Eureka client configuration since we're not using it
+# eureka:
+#   client:
+#     service-url:
+#       defaultZone: http://localhost:8761/eureka/
+#   instance:
+#     prefer-ip-address: true
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics,gateway
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG

@@ -49,6 +49,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/webjars/**",
+                                // Actuator health endpoints (for monitoring)
+                                "/actuator/health",
+                                "/actuator/health/**",
                                 // Error path
                                 "/error"
                         ).permitAll()

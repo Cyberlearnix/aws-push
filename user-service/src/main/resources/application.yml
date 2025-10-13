@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -31,6 +31,9 @@ spring:
           starttls:
             enable: true
     protocol: smtp
+  redis:
+    host: ${SPRING_REDIS_HOST:redis}
+    port: ${SPRING_REDIS_PORT:6379}
 
 eureka:
   client:
@@ -47,7 +50,7 @@ eureka:
     lease-expiration-duration-in-seconds: 10
 
 jwt:
-  secret: CyberLearnixSuperSecureJWTKeyChangeThis
+  secret: QWxhZGRpbjpvcGVuIHNlc2FtZSB0aGUgZG9vciB3aXRoIHRoZSBtYWdpYyB3b3JkcyBvZiBBbGFkZGluISBJZiB5b3Uga25vdyB0aGUgcGFzc3dvcmQsIHJlY2VpdmUgdGhlIHRyZWFzdXJlIG9mIE1vbnRlenVtYS4gQnV0IG9ubHkgdGhvc2Ugd2l0aCBhIHB1cmUgaGVhcnQgY2FuIGVudGVyISBZZXMsIHRoZSBjYXZlIGlzIGZ1bGwgb2YgdHJlYXN1cmVzLCBidXQgeW91IG11c3Qga25vdyB0aGUgcGFzc3dvcmQgdG8gZ2V0IHRoZW0hIE9wZW4gc2VzYW1lLCBvcGVuIGNvaW4sIG9wZW4gYm9va2luZy4gUmVhZCBhbmQgcmVhZCBhbmQgcmVhZCBhZ2Fpbi4gWWVzLCB0aGUgY2F2ZSBpcyBmdWxsIG9mIHRyZWFzdXJlcywgYnV0IHlvdSBtdXN0IGtub3cgdGhlIHBhc3N3b3JkIHRvIGdldCB0aGVtIT8=
   expiration-ms: 3600000
   access-expiry-seconds: 3600
 
@@ -60,14 +63,27 @@ token:
   expiry:
     hours: 1
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# Swagger security configuration
+springdoc.swagger-ui.csrf.enabled: false
+
+# Allow Swagger UI access through security
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
-  endpoint:
-    health:
-      show-details: always
+        include: health,info,metrics,swagger-ui
 
 logging:
   level:

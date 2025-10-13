@@ -3,33 +3,42 @@ spring:
     name: user-service
   cloud:
     config:
-      enabled: ${SPRING_CLOUD_CONFIG_ENABLED:false}
-      uri: ${SPRING_CLOUD_CONFIG_URI:http://localhost:8888}
+      enabled: false
 
-# Eureka client configuration for service discovery
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka/}
-    fetch-registry: true
-    register-with-eureka: true
-    healthcheck:
-      enabled: true
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${random.value}
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+# JWT Configuration with 512-bit secret
+jwt:
+  secret: QWxhZGRpbjpvcGVuIHNlc2FtZSB0aGUgZG9vciB3aXRoIHRoZSBtYWdpYyB3b3JkcyBvZiBBbGFkZGluISBJZiB5b3Uga25vdyB0aGUgcGFzc3dvcmQsIHJlY2VpdmUgdGhlIHRyZWFzdXJlIG9mIE1vbnRlenVtYS4gQnV0IG9ubHkgdGhvc2Ugd2l0aCBhIHB1cmUgaGVhcnQgY2FuIGVudGVyISBZZXMsIHRoZSBjYXZlIGlzIGZ1bGwgb2YgdHJlYXN1cmVzLCBidXQgeW91IG11c3Qga25vdyB0aGUgcGFzc3dvcmQgdG8gZ2V0IHRoZW0hIE9wZW4gc2VzYW1lLCBvcGVuIGNvaW4sIG9wZW4gYm9va2luZy4gUmVhZCBhbmQgcmVhZCBhbmQgcmVhZCBhZ2Fpbi4gWWVzLCB0aGUgY2F2ZSBpcyBmdWxsIG9mIHRyZWFzdXJlcywgYnV0IHlvdSBtdXN0IGtub3cgdGhlIHBhc3N3b3JkIHRvIGdldCB0aGVtIT8=
+  expiration-ms: 3600000
+  access-expiry-seconds: 3600
 
-# Enable HTTP trace for debugging
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,httptrace
-  trace:
-    http:
-      enabled: true
+# Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/cyberlearnixdb
+spring.datasource.username=cyberlearnix
+spring.datasource.password=cyberlearnix123
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Redis Configuration
+spring.redis.host=localhost
+spring.redis.port=6379
+
+# Email Configuration
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=cyberlearnixprivatelimited@gmail.com
+spring.mail.password=wxhqcbzyjfwhnoic
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Eureka Configuration
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.instance.prefer-ip-address=true
+
+# Actuator Configuration
+management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=always
+
+# Logging Configuration
+logging.level.org.springframework.security=DEBUG

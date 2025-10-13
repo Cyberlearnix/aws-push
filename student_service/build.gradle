@@ -8,7 +8,7 @@ plugins {
 group = 'com.student'
 description = 'Student Service for CyberLearnix LMS'
 
-// Note: Java version differs from root (21 vs 17)
+// Note: Java version matches other services (21)
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
@@ -22,7 +22,6 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.4"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
     }
 }
 
@@ -38,9 +37,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 	
 	// Database
 	implementation 'org.postgresql:postgresql'
