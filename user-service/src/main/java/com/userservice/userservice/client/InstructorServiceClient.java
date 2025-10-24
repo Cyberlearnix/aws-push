@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
-@FeignClient(name = "instructor-service", url = "http://localhost:8081")
+@FeignClient(name = "instructor-service", url = "${INSTRUCTOR_SERVICE_URL:http://localhost:8083}")
 public interface InstructorServiceClient {
     
     @GetMapping("/instructors/{id}")

@@ -6,14 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CertificateResponse {
     
-    private Long id;
-    private Long studentId;
+    private UUID id;
+    private UUID studentId;
     private Long courseId;
     private String certificateNumber;
     private String courseName;

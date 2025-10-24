@@ -8,22 +8,53 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
+
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:#{null}}")
     private String secret;
 
-    private Key key;
+    @Value("${jwt.expiration-ms:3600000}")
+    private Long expirationMs;
+
+    private SecretKey key;
 
     // ✅ Initialize the signing key after loading the secret
     @PostConstruct
     public void init() {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        try {
+            System.out.println("\n🔑 USER SERVICE JWT CONFIGURATION");
+            System.out.println("🔑 Secret length: " + (secret != null ? secret.length() : "NULL"));
+            System.out.println("🔑 First 20 chars: " + (secret != null && secret.length() > 20 ? secret.substring(0, 20) + "..." : "NULL"));
+            System.out.println("🔑 Expiration: " + expirationMs + "ms");
+
+            if (secret == null || secret.trim().isEmpty()) {
+                throw new RuntimeException("JWT secret is null or empty!");
+            }
+
+            // Ensure consistent UTF-8 encoding
+            byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+            this.key = Keys.hmacShaKeyFor(keyBytes);
+
+            // Test the key by generating a sample token
+            String testToken = Jwts.builder()
+                .setSubject("test")
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+            System.out.println("✅ JWT Key initialized successfully");
+            System.out.println("🔑 Test token: " + testToken);
+
+        } catch (Exception e) {
+            System.err.println("❌ JWT Initialization Error: " + e.getMessage());
+            throw new RuntimeException("Failed to initialize JWT", e);
+        }
     }
 
     // ✅ Expiration durations
@@ -39,7 +70,7 @@ public class JwtUtil {
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
     public UserRole extractUserRole(String token) {
@@ -54,7 +85,7 @@ public class JwtUtil {
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -65,7 +96,7 @@ public class JwtUtil {
                 .claim("email", email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + TEMP_TOKEN_EXPIRATION_MS))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -106,10 +137,10 @@ public class JwtUtil {
 
     // ✅ Core claim parser
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
+        return Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

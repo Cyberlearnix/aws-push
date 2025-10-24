@@ -37,10 +37,10 @@ spring:
           starttls:
             enable: true
 
-# JWT Configuration
 jwt:
   secret: ${JWT_SECRET:QWxhZGRpbjpvcGVuIHNlc2FtZSB0aGUgZG9vciB3aXRoIHRoZSBtYWdpYyB3b3JkcyBvZiBBbGFkZGluISBJZiB5b3Uga25vdyB0aGUgcGFzc3dvcmQsIHJlY2VpdmUgdGhlIHRyZWFzdXJlIG9mIE1vbnRlenVtYS4gQnV0IG9ubHkgdGhvc2Ugd2l0aCBhIHB1cmUgaGVhcnQgY2FuIGVudGVyISBZZXMsIHRoZSBjYXZlIGlzIGZ1bGwgb2YgdHJlYXN1cmVzLCBidXQgeW91IG11c3Qga25vdyB0aGUgcGFzc3dvcmQgdG8gZ2V0IHRoZW0hIE9wZW4gc2VzYW1lLCBvcGVuIGNvaW4sIG9wZW4gYm9va2luZy4gUmVhZCBhbmQgcmVhZCBhbmQgcmVhZCBhZ2Fpbi4gWWVzLCB0aGUgY2F2ZSBpcyBmdWxsIG9mIHRyZWFzdXJlcywgYnV0IHlvdSBtdXN0IGtub3cgdGhlIHBhc3N3b3JkIHRvIGdldCB0aGVtIT8=}
-  expiration: 86400000  # 24 hours in milliseconds
+  expiration-ms: 3600000  # 1 hour in milliseconds (access token)
+  access-expiry-seconds: 3600
   refresh-expiration: 2592000000  # 30 days in milliseconds
 
 # Actuator Configuration

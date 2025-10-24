@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +27,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StudentRepository studentRepository;
     
-    public ReviewResponse addReview(Long studentId, ReviewRequest request) {
+    public ReviewResponse addReview(UUID studentId, ReviewRequest request) {
         log.info("Adding review for student {} on course {}", studentId, request.getCourseId());
         
         Student student = studentRepository.findActiveById(studentId)
@@ -52,10 +53,10 @@ public class ReviewService {
         Review savedReview = reviewRepository.save(review);
         log.info("Successfully added review for student {} on course {}", studentId, request.getCourseId());
         
-        return mapToResponse(savedReview);
+        return mapToResponse(savedReview, studentId);
     }
     
-    public ReviewResponse updateReview(Long studentId, Long courseId, Long reviewId, ReviewRequest request) {
+    public ReviewResponse updateReview(UUID studentId, Long courseId, Long reviewId, ReviewRequest request) {
         log.info("Updating review {} for student {} on course {}", reviewId, studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -77,10 +78,10 @@ public class ReviewService {
         Review savedReview = reviewRepository.save(review);
         log.info("Successfully updated review {} for student {} on course {}", reviewId, studentId, courseId);
         
-        return mapToResponse(savedReview);
+        return mapToResponse(savedReview, studentId);
     }
     
-    public void deleteReview(Long studentId, Long courseId, Long reviewId) {
+    public void deleteReview(UUID studentId, Long courseId, Long reviewId) {
         log.info("Deleting review {} for student {} on course {}", reviewId, studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -102,7 +103,7 @@ public class ReviewService {
     }
     
     @Transactional(readOnly = true)
-    public List<ReviewResponse> getStudentReviews(Long studentId) {
+    public List<ReviewResponse> getStudentReviews(UUID studentId) {
         log.info("Fetching reviews for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -111,14 +112,14 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findActiveReviewsByStudentId(studentId);
         
         return reviews.stream()
-                .map(this::mapToResponse)
+                .map(review -> mapToResponse(review, studentId))
                 .collect(Collectors.toList());
     }
     
-    private ReviewResponse mapToResponse(Review review) {
+    private ReviewResponse mapToResponse(Review review, UUID studentId) {
         ReviewResponse response = new ReviewResponse();
         response.setId(review.getId());
-        response.setStudentId(review.getStudent().getId());
+        response.setStudentId(studentId);
         response.setStudentName(review.getStudent().getFirstName() + " " + review.getStudent().getLastName());
         response.setCourseId(review.getCourseId());
         response.setRating(review.getRating());

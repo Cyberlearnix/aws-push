@@ -38,7 +38,7 @@ public class AssignmentService {
     private static final String UPLOAD_DIR = "uploads/assignments/";
     
     @Transactional(readOnly = true)
-    public List<Assignment> getAssignments(Long studentId) {
+    public List<Assignment> getAssignments(UUID studentId) {
         log.info("Fetching assignments for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -49,7 +49,7 @@ public class AssignmentService {
         return assignmentRepository.findAll();
     }
     
-    public AssignmentSubmissionResponse submitAssignment(Long studentId, Long assignmentId, AssignmentSubmissionRequest request) {
+    public AssignmentSubmissionResponse submitAssignment(UUID studentId, Long assignmentId, AssignmentSubmissionRequest request) {
         log.info("Submitting assignment {} for student {}", assignmentId, studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -105,11 +105,11 @@ public class AssignmentService {
         log.info("Successfully submitted assignment {} for student {} (attempt {})", 
                 assignmentId, studentId, nextAttempt);
         
-        return mapToResponse(savedSubmission);
+        return mapToResponse(savedSubmission, studentId);
     }
     
     @Transactional(readOnly = true)
-    public List<AssignmentSubmissionResponse> getAssignmentSubmissions(Long studentId) {
+    public List<AssignmentSubmissionResponse> getAssignmentSubmissions(UUID studentId) {
         log.info("Fetching assignment submissions for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -118,11 +118,11 @@ public class AssignmentService {
         List<AssignmentSubmission> submissions = assignmentSubmissionRepository.findByStudentId(studentId);
         
         return submissions.stream()
-                .map(this::mapToResponse)
+                .map(submission -> mapToResponse(submission, studentId))
                 .collect(Collectors.toList());
     }
     
-    private String saveUploadedFile(MultipartFile file, Long studentId, Long assignmentId) throws IOException {
+    private String saveUploadedFile(MultipartFile file, UUID studentId, Long assignmentId) throws IOException {
         // Create upload directory if it doesn't exist
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
@@ -133,7 +133,7 @@ public class AssignmentService {
         String originalFileName = file.getOriginalFilename();
         String fileExtension = originalFileName != null ? 
                 originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
-        String fileName = "student_" + studentId + "_assignment_" + assignmentId + "_" + 
+        String fileName = "student_" + studentId.toString() + "_assignment_" + assignmentId + "_" + 
                 UUID.randomUUID().toString() + fileExtension;
         
         // Save file
@@ -143,10 +143,10 @@ public class AssignmentService {
         return fileName;
     }
     
-    private AssignmentSubmissionResponse mapToResponse(AssignmentSubmission submission) {
+    private AssignmentSubmissionResponse mapToResponse(AssignmentSubmission submission, UUID studentId) {
         AssignmentSubmissionResponse response = new AssignmentSubmissionResponse();
         response.setId(submission.getId());
-        response.setStudentId(submission.getStudent().getId());
+        response.setStudentId(studentId);
         response.setAssignmentId(submission.getAssignment().getId());
         response.setAssignmentTitle(submission.getAssignment().getTitle());
         response.setStatus(submission.getStatus());

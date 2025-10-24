@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class QuizService {
     private final StudentRepository studentRepository;
     
     @Transactional(readOnly = true)
-    public List<Quiz> getQuizzesForModule(Long studentId, Long courseId, Long moduleId) {
+    public List<Quiz> getQuizzesForModule(UUID studentId, Long courseId, Long moduleId) {
         log.info("Fetching quizzes for student {} in course {} module {}", studentId, courseId, moduleId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -39,7 +40,7 @@ public class QuizService {
         return quizRepository.findActiveQuizzesByCourseIdAndModuleId(courseId, moduleId);
     }
     
-    public QuizSubmissionResponse submitQuiz(Long studentId, Long courseId, Long moduleId, Long quizId, QuizSubmissionRequest request) {
+    public QuizSubmissionResponse submitQuiz(UUID studentId, Long courseId, Long moduleId, Long quizId, QuizSubmissionRequest request) {
         log.info("Submitting quiz {} for student {} in course {} module {}", quizId, studentId, courseId, moduleId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -100,21 +101,20 @@ public class QuizService {
         }
         
         // Update submission with final score
+        double percentage = totalPoints > 0 ? (totalScore / totalPoints) * 100 : 0.0;
         savedSubmission.setScore(totalScore);
-        savedSubmission.setPercentage(totalPoints > 0 ? (totalScore / totalPoints) * 100 : 0.0);
-        savedSubmission.setIsPassed(savedSubmission.getPercentage() >= quiz.getPassingScore());
-        savedSubmission.setStatus(QuizSubmission.SubmissionStatus.GRADED);
+        savedSubmission.setPercentage(percentage);
+        savedSubmission.setIsPassed(percentage >= quiz.getPassingScore());
         
-        QuizSubmission finalSubmission = quizSubmissionRepository.save(savedSubmission);
+        quizSubmissionRepository.save(savedSubmission);
         
-        log.info("Successfully submitted quiz {} for student {} with score {}/{}", 
-                quizId, studentId, totalScore, totalPoints);
+        log.info("Successfully submitted quiz {} for student {} (attempt {})", quizId, studentId, nextAttempt);
         
-        return mapToResponse(finalSubmission);
+        return mapToResponse(savedSubmission, studentId);
     }
     
     @Transactional(readOnly = true)
-    public List<QuizSubmissionResponse> getQuizResults(Long studentId, Long courseId) {
+    public List<QuizSubmissionResponse> getQuizResults(UUID studentId, Long courseId) {
         log.info("Fetching quiz results for student {} in course {}", studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -123,7 +123,7 @@ public class QuizService {
         List<QuizSubmission> submissions = quizSubmissionRepository.findQuizSubmissionsByStudentIdAndCourseId(studentId, courseId);
         
         return submissions.stream()
-                .map(this::mapToResponse)
+                .map(submission -> mapToResponse(submission, studentId))
                 .collect(Collectors.toList());
     }
     
@@ -144,10 +144,10 @@ public class QuizService {
         return 0.0;
     }
     
-    private QuizSubmissionResponse mapToResponse(QuizSubmission submission) {
+    private QuizSubmissionResponse mapToResponse(QuizSubmission submission, UUID studentId) {
         QuizSubmissionResponse response = new QuizSubmissionResponse();
         response.setId(submission.getId());
-        response.setStudentId(submission.getStudent().getId());
+        response.setStudentId(studentId);
         response.setQuizId(submission.getQuiz().getId());
         response.setQuizTitle(submission.getQuiz().getTitle());
         response.setStatus(submission.getStatus());

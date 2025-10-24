@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class AssignmentSubmissionResponse {
     
     private Long id;
-    private Long studentId;
+    private UUID studentId;
     private Long assignmentId;
     private String assignmentTitle;
     private AssignmentSubmission.SubmissionStatus status;

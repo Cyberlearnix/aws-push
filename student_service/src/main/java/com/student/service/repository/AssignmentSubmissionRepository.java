@@ -8,21 +8,22 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface AssignmentSubmissionRepository extends JpaRepository<AssignmentSubmission, Long> {
-    
-    List<AssignmentSubmission> findByStudentId(Long studentId);
-    
-    List<AssignmentSubmission> findByStudentIdAndAssignmentCourseId(Long studentId, Long courseId);
-    
-    Optional<AssignmentSubmission> findByStudentIdAndAssignmentId(Long studentId, Long assignmentId);
-    
+
+    List<AssignmentSubmission> findByStudentId(UUID studentId);
+
+    List<AssignmentSubmission> findByStudentIdAndAssignmentCourseId(UUID studentId, Long courseId);
+
+    Optional<AssignmentSubmission> findByStudentIdAndAssignmentId(UUID studentId, Long assignmentId);
+
     @Query("SELECT as FROM AssignmentSubmission as WHERE as.student.id = :studentId AND as.assignment.courseId = :courseId")
-    List<AssignmentSubmission> findAssignmentSubmissionsByStudentIdAndCourseId(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
-    
+    List<AssignmentSubmission> findAssignmentSubmissionsByStudentIdAndCourseId(@Param("studentId") UUID studentId, @Param("courseId") Long courseId);
+
     @Query("SELECT as FROM AssignmentSubmission as WHERE as.student.id = :studentId AND as.assignment.id = :assignmentId ORDER BY as.attemptNumber DESC")
-    List<AssignmentSubmission> findAssignmentSubmissionsByStudentIdAndAssignmentIdOrderByAttempt(@Param("studentId") Long studentId, @Param("assignmentId") Long assignmentId);
+    List<AssignmentSubmission> findAssignmentSubmissionsByStudentIdAndAssignmentIdOrderByAttempt(@Param("studentId") UUID studentId, @Param("assignmentId") Long assignmentId);
 }
 
 

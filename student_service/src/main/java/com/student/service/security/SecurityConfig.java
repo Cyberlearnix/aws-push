@@ -31,26 +31,21 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/test/**").permitAll()
-                .requestMatchers("/students/*/certificates/verify/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/test/**").permitAll()
+                .requestMatchers("/api/students/{id}/certificates/verify/**").permitAll()
+                
+                // Swagger & API documentation
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 
                 // Student endpoints - require STUDENT role
-                .requestMatchers("/students/*/courses/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/progress/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/assignments/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/certificates/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/reviews/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/announcements/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/messages/**").hasRole("STUDENT")
-                .requestMatchers("/students/*/dashboard").hasRole("STUDENT")
-                .requestMatchers("/students/*/stats").hasRole("STUDENT")
+                .requestMatchers("/api/students/**").hasRole("STUDENT")
                 
                 // Instructor endpoints - require INSTRUCTOR role
-                .requestMatchers("/instructors/**").hasRole("INSTRUCTOR")
+                .requestMatchers("/api/instructors/**").hasRole("INSTRUCTOR")
                 
                 // Admin endpoints - require ADMIN role
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 
                 // All other requests need authentication
                 .anyRequest().authenticated()

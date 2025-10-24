@@ -1,6 +1,5 @@
 package com.userservice.userservice.config;
 
-import com.userservice.userservice.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +21,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    // private final JwtAuthFilter jwtAuthFilter; // Temporarily disabled
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -67,9 +65,9 @@ public class SecurityConfig {
                             res.setStatus(HttpStatus.FORBIDDEN.value());
                             res.setContentType("application/json");
                             res.getWriter().write("{\"error\":\"FORBIDDEN\",\"message\":\"Access denied\"}");
-                        })
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                        }));
+                // Temporarily disabled JWT filter
+                // .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

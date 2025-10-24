@@ -5,18 +5,24 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.annotation.Backoff;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
+@EnableRetry
 public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Retryable(value = { MessagingException.class, SocketException.class }, maxAttempts = 3, backoff = @Backoff(delay = 1000))
     public void sendOtpEmail(String to, String otp) {
         if (to == null || to.isBlank()) {
             throw new IllegalArgumentException("Recipient email address is missing");

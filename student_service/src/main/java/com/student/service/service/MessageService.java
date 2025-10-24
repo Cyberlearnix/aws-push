@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,7 @@ public class MessageService {
     private final StudentRepository studentRepository;
     
     @Transactional(readOnly = true)
-    public List<MessageResponse> getMessages(Long studentId) {
+    public List<MessageResponse> getMessages(UUID studentId) {
         log.info("Fetching messages for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -34,12 +35,12 @@ public class MessageService {
         List<Message> messages = messageRepository.findByStudentId(studentId);
         
         return messages.stream()
-                .map(this::mapToResponse)
+                .map(message -> mapToResponse(message, studentId))
                 .collect(Collectors.toList());
     }
     
     @Transactional(readOnly = true)
-    public List<MessageResponse> getMessagesForCourse(Long studentId, Long courseId) {
+    public List<MessageResponse> getMessagesForCourse(UUID studentId, Long courseId) {
         log.info("Fetching messages for student {} in course {}", studentId, courseId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -48,11 +49,11 @@ public class MessageService {
         List<Message> messages = messageRepository.findMessagesByStudentIdAndCourseIdOrderByCreatedAt(studentId, courseId);
         
         return messages.stream()
-                .map(this::mapToResponse)
+                .map(message -> mapToResponse(message, studentId))
                 .collect(Collectors.toList());
     }
     
-    public void markMessageAsRead(Long studentId, Long messageId) {
+    public void markMessageAsRead(UUID studentId, Long messageId) {
         log.info("Marking message {} as read for student {}", messageId, studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -76,7 +77,7 @@ public class MessageService {
     }
     
     @Transactional(readOnly = true)
-    public Long getUnreadMessageCount(Long studentId) {
+    public Long getUnreadMessageCount(UUID studentId) {
         log.info("Getting unread message count for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -85,10 +86,10 @@ public class MessageService {
         return messageRepository.countUnreadMessagesByStudentId(studentId);
     }
     
-    private MessageResponse mapToResponse(Message message) {
+    private MessageResponse mapToResponse(Message message, UUID studentId) {
         MessageResponse response = new MessageResponse();
         response.setId(message.getId());
-        response.setStudentId(message.getStudentId());
+        response.setStudentId(studentId);
         response.setInstructorId(message.getInstructorId());
         response.setCourseId(message.getCourseId());
         response.setSubject(message.getSubject());

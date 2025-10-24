@@ -49,7 +49,14 @@ public class Quiz {
     private Double passingScore = 70.0;
     
     @Column
+    private Double passingPercentage = 70.0;
+    
+    @Column
     private Integer totalQuestions;
+    
+    public Double getPassingPercentage() {
+        return passingPercentage;
+    }
     
     @Column
     private Double totalPoints;

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "messages")
@@ -23,7 +24,7 @@ public class Message {
     private Long id;
     
     @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    private UUID studentId;
     
     @Column(name = "instructor_id", nullable = false)
     private Long instructorId;
@@ -76,8 +77,6 @@ public class Message {
         UNREAD, READ, REPLIED, ARCHIVED
     }
 }
-
-
 
 
 

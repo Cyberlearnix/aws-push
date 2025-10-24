@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +24,7 @@ public class CertificateService {
     private final CertificateRepository certificateRepository;
     private final StudentRepository studentRepository;
     
-    public List<CertificateResponse> getCertificates(Long studentId) {
+    public List<CertificateResponse> getCertificates(UUID studentId) {
         log.info("Fetching certificates for student {}", studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -32,11 +33,11 @@ public class CertificateService {
         List<Certificate> certificates = certificateRepository.findActiveCertificatesByStudentId(studentId);
         
         return certificates.stream()
-                .map(this::mapToResponse)
+                .map(certificate -> mapToResponse(certificate, studentId))
                 .collect(Collectors.toList());
     }
     
-    public CertificateResponse getCertificate(Long studentId, Long certificateId) {
+    public CertificateResponse getCertificate(UUID studentId, UUID certificateId) {
         log.info("Fetching certificate {} for student {}", certificateId, studentId);
         
         Student student = studentRepository.findActiveById(studentId)
@@ -50,7 +51,7 @@ public class CertificateService {
             throw new ResourceNotFoundException("Certificate not found");
         }
         
-        return mapToResponse(certificate);
+        return mapToResponse(certificate, studentId);
     }
     
     public CertificateResponse verifyCertificate(String verificationCode) {
@@ -63,13 +64,13 @@ public class CertificateService {
             throw new ResourceNotFoundException("Certificate is not active");
         }
         
-        return mapToResponse(certificate);
+        return mapToResponse(certificate, certificate.getStudent().getId());
     }
     
-    private CertificateResponse mapToResponse(Certificate certificate) {
+    private CertificateResponse mapToResponse(Certificate certificate, UUID studentId) {
         CertificateResponse response = new CertificateResponse();
         response.setId(certificate.getId());
-        response.setStudentId(certificate.getStudent().getId());
+        response.setStudentId(studentId);
         response.setCourseId(certificate.getCourseId());
         response.setCertificateNumber(certificate.getCertificateNumber());
         response.setCourseName(certificate.getCourseName());

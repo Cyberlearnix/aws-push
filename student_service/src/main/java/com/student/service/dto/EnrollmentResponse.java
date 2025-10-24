@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class EnrollmentResponse {
     
     private Long id;
-    private Long studentId;
+    private UUID studentId;
     private Long courseId;
     private String courseName;
     private Enrollment.EnrollmentStatus status;

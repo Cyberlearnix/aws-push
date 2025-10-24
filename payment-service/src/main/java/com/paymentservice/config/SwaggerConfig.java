@@ -1,4 +1,4 @@
-package com.userservice.userservice.config;
+package com.paymentservice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -18,9 +18,9 @@ public class SwaggerConfig {
     private String contextPath;
 
     @Bean
-    public OpenAPI userServiceOpenAPI() {
+    public OpenAPI paymentServiceOpenAPI() {
         Server devServer = new Server();
-        devServer.setUrl("http://localhost:8081" + contextPath);
+        devServer.setUrl("http://localhost:8086" + contextPath);
         devServer.setDescription("Development server");
 
         Contact contact = new Contact();
@@ -32,9 +32,9 @@ public class SwaggerConfig {
         license.setUrl("https://choosealicense.com/licenses/mit/");
 
         Info info = new Info()
-                .title("CyberLearnIX User Service API")
+                .title("CyberLearnIX Payment Service API")
                 .version("1.0")
-                .description("REST API for User Management in CyberLearnIX LMS")
+                .description("REST API for Payment Management in CyberLearnIX LMS")
                 .contact(contact)
                 .license(license);
 

@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatsResponse {
     
-    private Long studentId;
+    private UUID studentId;
     private String studentName;
     private Integer totalCoursesEnrolled;
     private Integer totalCoursesCompleted;

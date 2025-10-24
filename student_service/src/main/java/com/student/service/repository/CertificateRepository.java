@@ -8,21 +8,22 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface CertificateRepository extends JpaRepository<Certificate, Long> {
-    
-    List<Certificate> findByStudentId(Long studentId);
-    
-    Optional<Certificate> findByStudentIdAndCourseId(Long studentId, Long courseId);
-    
+public interface CertificateRepository extends JpaRepository<Certificate, UUID> {
+
+    List<Certificate> findByStudentId(UUID studentId);
+
+    Optional<Certificate> findByStudentIdAndCourseId(UUID studentId, Long courseId);
+
     Optional<Certificate> findByCertificateNumber(String certificateNumber);
-    
+
     Optional<Certificate> findByVerificationCode(String verificationCode);
-    
+
     @Query("SELECT c FROM Certificate c WHERE c.student.id = :studentId AND c.status = 'ACTIVE'")
-    List<Certificate> findActiveCertificatesByStudentId(@Param("studentId") Long studentId);
-    
+    List<Certificate> findActiveCertificatesByStudentId(@Param("studentId") UUID studentId);
+
     @Query("SELECT c FROM Certificate c WHERE c.courseId = :courseId AND c.status = 'ACTIVE'")
     List<Certificate> findActiveCertificatesByCourseId(@Param("courseId") Long courseId);
 }

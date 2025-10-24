@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import java.util.List;
 public class QuizSubmissionResponse {
     
     private Long id;
-    private Long studentId;
+    private UUID studentId;
     private Long quizId;
     private String quizTitle;
     private QuizSubmission.SubmissionStatus status;

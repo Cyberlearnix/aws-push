@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +27,7 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final StudentRepository studentRepository;
     
-    public EnrollmentResponse enrollInCourse(Long studentId, EnrollmentRequest request) {
+    public EnrollmentResponse enrollInCourse(UUID studentId, EnrollmentRequest request) {
         log.info("Enrolling student {} in course {}", studentId, request.getCourseId());
         
         Student student = studentRepository.findActiveById(studentId)
@@ -49,42 +50,38 @@ public class EnrollmentService {
         Enrollment savedEnrollment = enrollmentRepository.save(enrollment);
         log.info("Successfully enrolled student {} in course {}", studentId, request.getCourseId());
         
-        return mapToResponse(savedEnrollment);
+        return mapToResponse(savedEnrollment, studentId);
     }
     
     @Transactional(readOnly = true)
-    public List<EnrollmentResponse> getEnrolledCourses(Long studentId) {
+    public List<EnrollmentResponse> getEnrolledCourses(UUID studentId) {
         log.info("Fetching enrolled courses for student {}", studentId);
-        
-        Student student = studentRepository.findActiveById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+
+        // No need to validate student exists in database since JWT already validated authentication
         List<Enrollment> enrollments = enrollmentRepository.findActiveEnrollmentsByStudentId(studentId);
-        
+
         return enrollments.stream()
-                .map(this::mapToResponse)
+                .map(enrollment -> mapToResponse(enrollment, studentId))
                 .collect(Collectors.toList());
     }
     
-    public void unenrollFromCourse(Long studentId, Long courseId) {
+    public void unenrollFromCourse(UUID studentId, Long courseId) {
         log.info("Unenrolling student {} from course {}", studentId, courseId);
-        
-        Student student = studentRepository.findActiveById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+
+        // No need to validate student exists in database since JWT already validated authentication
         Enrollment enrollment = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Enrollment not found"));
-        
+
         enrollment.setStatus(Enrollment.EnrollmentStatus.CANCELLED);
         enrollmentRepository.save(enrollment);
-        
+
         log.info("Successfully unenrolled student {} from course {}", studentId, courseId);
     }
     
-    private EnrollmentResponse mapToResponse(Enrollment enrollment) {
+    private EnrollmentResponse mapToResponse(Enrollment enrollment, UUID studentId) {
         EnrollmentResponse response = new EnrollmentResponse();
         response.setId(enrollment.getId());
-        response.setStudentId(enrollment.getStudent().getId());
+        response.setStudentId(studentId);
         response.setCourseId(enrollment.getCourseId());
         response.setStatus(enrollment.getStatus());
         response.setEnrolledAt(enrollment.getEnrolledAt());

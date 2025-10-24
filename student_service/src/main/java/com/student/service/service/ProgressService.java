@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,30 +24,25 @@ import java.util.stream.Collectors;
 public class ProgressService {
     
     private final ProgressRepository progressRepository;
-    private final StudentRepository studentRepository;
     
     @Transactional(readOnly = true)
-    public List<ProgressResponse> getCourseProgress(Long studentId, Long courseId) {
+    public List<ProgressResponse> getCourseProgress(UUID studentId, Long courseId) {
         log.info("Fetching progress for student {} in course {}", studentId, courseId);
-        
-        Student student = studentRepository.findActiveById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+
+        // No need to validate student exists in database since JWT already validated authentication
         List<Progress> progressList = progressRepository.findByStudentIdAndCourseId(studentId, courseId);
-        
+
         return progressList.stream()
-                .map(this::mapToResponse)
+                .map(progress -> mapToResponse(progress, studentId))
                 .collect(Collectors.toList());
     }
     
-    public ProgressResponse updateProgress(Long studentId, Long courseId, ProgressRequest request) {
+    public ProgressResponse updateProgress(UUID studentId, Long courseId, ProgressRequest request) {
         log.info("Updating progress for student {} in course {}", studentId, courseId);
-        
-        Student student = studentRepository.findActiveById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+
+        // No need to validate student exists in database since JWT already validated authentication
         Progress progress;
-        
+
         if (request.getModuleId() != null && request.getLessonId() != null) {
             // Lesson progress
             progress = progressRepository.findByStudentIdAndCourseIdAndModuleIdAndLessonId(
@@ -63,45 +59,43 @@ public class ProgressService {
                     studentId, courseId, null, null)
                     .orElse(createNewProgress(studentId, courseId, request));
         }
-        
+
         // Update progress fields
         progress.setStatus(request.getStatus());
         progress.setCompletionPercentage(request.getCompletionPercentage());
         progress.setTimeSpentMinutes(request.getTimeSpentMinutes());
         progress.setNotes(request.getNotes());
         progress.setLastAccessedAt(LocalDateTime.now());
-        
+
         if (request.getStatus() == Progress.ProgressStatus.IN_PROGRESS && progress.getStartedAt() == null) {
             progress.setStartedAt(LocalDateTime.now());
         }
-        
+
         if (request.getStatus() == Progress.ProgressStatus.COMPLETED) {
             progress.setCompletedAt(LocalDateTime.now());
         }
-        
+
         Progress savedProgress = progressRepository.save(progress);
         log.info("Successfully updated progress for student {} in course {}", studentId, courseId);
-        
-        return mapToResponse(savedProgress);
+
+        return mapToResponse(savedProgress, studentId);
     }
     
     @Transactional(readOnly = true)
-    public List<ProgressResponse> getOverallProgress(Long studentId) {
+    public List<ProgressResponse> getOverallProgress(UUID studentId) {
         log.info("Fetching overall progress for student {}", studentId);
-        
-        Student student = studentRepository.findActiveById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
-        
+
+        // No need to validate student exists in database since JWT already validated authentication
         List<Progress> progressList = progressRepository.findCourseProgressByStudentId(studentId);
-        
+
         return progressList.stream()
-                .map(this::mapToResponse)
+                .map(progress -> mapToResponse(progress, studentId))
                 .collect(Collectors.toList());
     }
     
-    private Progress createNewProgress(Long studentId, Long courseId, ProgressRequest request) {
+    private Progress createNewProgress(UUID studentId, Long courseId, ProgressRequest request) {
         Progress progress = new Progress();
-        progress.setStudent(studentRepository.findById(studentId).orElseThrow());
+        progress.setStudent(null); // Student relationship handled by studentId in other fields
         progress.setCourseId(courseId);
         progress.setModuleId(request.getModuleId());
         progress.setLessonId(request.getLessonId());
@@ -111,22 +105,22 @@ public class ProgressService {
         progress.setTimeSpentMinutes(request.getTimeSpentMinutes() != null ? request.getTimeSpentMinutes() : 0);
         progress.setNotes(request.getNotes());
         progress.setLastAccessedAt(LocalDateTime.now());
-        
+
         if (request.getStatus() == Progress.ProgressStatus.IN_PROGRESS) {
             progress.setStartedAt(LocalDateTime.now());
         }
-        
+
         if (request.getStatus() == Progress.ProgressStatus.COMPLETED) {
             progress.setCompletedAt(LocalDateTime.now());
         }
-        
+
         return progress;
     }
     
-    private ProgressResponse mapToResponse(Progress progress) {
+    private ProgressResponse mapToResponse(Progress progress, UUID studentId) {
         ProgressResponse response = new ProgressResponse();
         response.setId(progress.getId());
-        response.setStudentId(progress.getStudent().getId());
+        response.setStudentId(studentId);
         response.setCourseId(progress.getCourseId());
         response.setModuleId(progress.getModuleId());
         response.setLessonId(progress.getLessonId());

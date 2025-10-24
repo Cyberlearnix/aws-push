@@ -35,6 +35,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    // Spring Retry for handling email send failures
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework:spring-aspects'
+
     // Redis for caching OTP/session
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
@@ -43,14 +47,13 @@ dependencies {
 
     // Feign for service-to-service communication
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4'
-
     // Database
     runtimeOnly 'org.postgresql:postgresql'
 
     // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -59,6 +62,7 @@ dependencies {
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'com.h2database:h2'
 }
 
 bootJar {
