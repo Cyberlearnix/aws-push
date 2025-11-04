@@ -32,11 +32,15 @@ public class ModuleEntity {
     @Column(columnDefinition = "TEXT")
     private String content; // Could be markdown, HTML, or reference to external content
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private String contentType; // TEXT, VIDEO, DOCUMENT, QUIZ, etc.
+    private ContentType contentType = ContentType.TEXT;
 
-    @Column
-    private String contentUrl; // URL for videos, documents, etc.
+    @Column(name = "video_url")
+    private String videoUrl; // URL for video content
+    
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl; // URL for thumbnail image
 
     @Builder.Default
     @Column(nullable = false)
@@ -45,8 +49,12 @@ public class ModuleEntity {
     private Integer duration; // Duration in minutes
 
     @Builder.Default
-    @Column(nullable = false)
-    private Boolean isPublished = false;
+    @Column(name = "is_published", nullable = false)
+    private Boolean published = false;
+
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -59,4 +67,9 @@ public class ModuleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private CourseEntity course;
+
+    // Many-to-One relationship with instructor
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instructor_id", nullable = false)
+    private Instructor instructor;
 }

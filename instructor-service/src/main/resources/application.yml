@@ -1,0 +1,68 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /instructor-service
+
+spring:
+  application:
+    name: instructor-service
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cyberlearnixdb}
+    username: ${SPRING_DATASOURCE_USERNAME:cyberlearnix}
+    password: ${SPRING_DATASOURCE_PASSWORD:cyberlearnix123}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Async configuration
+  task:
+    execution:
+      thread-name-prefix: async-event-exec-
+      pool:
+        core-size: 5
+        max-size: 10
+        queue-capacity: 100
+        allow-core-thread-timeout: true
+      shutdown:
+        await-termination: true
+        await-termination-period: 60s
+
+# JWT Configuration (must match user-service exactly)
+jwt:
+  secret: ${JWT_SECRET:QWxhZGRpbjpvcGVuIHNlc2FtZSB0aGUgZG9vciB3aXRoIHRoZSBtYWdpYyB3b3JkcyBvZiBBbGFkZGluISBJZiB5b3Uga25vdyB0aGUgcGFzc3dvcmQsIHJlY2VpdmUgdGhlIHRyZWFzdXJlIG9mIE1vbnRlenVtYS4gQnV0IG9ubHkgdGhvc2Ugd2l0aCBhIHB1cmUgaGVhcnQgY2FuIGVudGVyISBZZXMsIHRoZSBjYXZlIGlzIGZ1bGwgb2YgdHJlYXN1cmVzLCBidXQgeW91IG11c3Qga25vdyB0aGUgcGFzc3dvcmQgdG8gZ2V0IHRoZW0hIE9wZW4gc2VzYW1lLCBvcGVuIGNvaW4sIG9wZW4gYm9va2luZy4gUmVhZCBhbmQgcmVhZCBhbmQgcmVhZCBhZ2Fpbi4gWWVzLCB0aGUgY2F2ZSBpcyBmdWxsIG9mIHRyZWFzdXJlcywgYnV0IHlvdSBtdXN0IGtub3cgdGhlIHBhc3N3b3JkIHRvIGdldCB0aGVtIT8=}  # Must match user-service exactly
+  expiration-ms: 86400000  # 24 hours
+  access-expiry-seconds: 86400  # 24 hours
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,mappings
+  endpoint:
+    health:
+      show-details: always
+  endpoint.mappings.enabled: true
+  endpoint.mappings.cache.time-to-live: 0s
+
+logging:
+  level:
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet: DEBUG
+    org.springframework.web.filter: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+    com.instructor.service: DEBUG
+    com.instructor.service.service.CourseService: TRACE
+    org.springframework.web.client.RestTemplate: DEBUG

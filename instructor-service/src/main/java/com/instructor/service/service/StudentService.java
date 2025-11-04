@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     // courseId -> set of studentIds
-    private final Map<Long, Set<Long>> courseEnrollments = new ConcurrentHashMap<>();
+    private final Map<Long, Set<UUID>> courseEnrollments = new ConcurrentHashMap<>();
     // key: courseId:studentId -> progress percent
     private final Map<String, Double> progress = new ConcurrentHashMap<>();
     // key: courseId:studentId -> grade
@@ -31,7 +31,7 @@ public class StudentService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public StudentProgressResponse getStudentProgress(Long courseId, Long studentId) {
+    public StudentProgressResponse getStudentProgress(Long courseId, UUID studentId) {
         double pct = progress.getOrDefault(key(courseId, studentId), 0.0);
         return StudentProgressResponse.builder()
                 .studentId(studentId)
@@ -48,11 +48,11 @@ public class StudentService {
     }
 
     // utility for tests/demos
-    public void enroll(Long courseId, Long studentId) {
+    public void enroll(Long courseId, UUID studentId) {
         courseEnrollments.computeIfAbsent(courseId, k -> ConcurrentHashMap.newKeySet()).add(studentId);
     }
 
-    private String key(Long courseId, Long studentId) {
+    private String key(Long courseId, UUID studentId) {
         return courseId + ":" + studentId;
     }
 }

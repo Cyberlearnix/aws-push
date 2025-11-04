@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Access(AccessType.FIELD)
 @Table(
         name = "messages",
         indexes = {
@@ -36,17 +37,27 @@ public class MessageEntity {
 
     @Column
     private UUID recipientUserId; // Specific student or null for all students
+    
+    @Column(nullable = false)
+    private UUID senderId;
+    
+    @Column(nullable = false, length = 100)
+    private String senderName;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private CourseEntity course;
 
     @Column(length = 20)
     private String messageType; // INDIVIDUAL, BROADCAST, REPLY
 
     @Builder.Default
-    @Column(nullable = false)
+    @Column(name = "is_read", nullable = false)
     private Boolean isRead = false;
 
     @Builder.Default
-    @Column(nullable = false)
-    private Boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -55,8 +66,4 @@ public class MessageEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // Many-to-One relationship with course
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    private CourseEntity course;
 }

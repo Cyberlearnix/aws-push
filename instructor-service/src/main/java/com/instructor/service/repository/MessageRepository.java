@@ -17,65 +17,70 @@ import java.util.UUID;
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
     /**
+     * Find messages by course ID ordered by creation date desc
+     */
+    List<MessageEntity> findByCourseIdOrderByCreatedAtDesc(Long courseId);
+
+    /**
      * Find messages by course ordered by creation date desc
      */
-    List<MessageEntity> findByCourseAndIsActiveTrueOrderByCreatedAtDesc(CourseEntity course);
+    List<MessageEntity> findByCourseAndActiveTrueOrderByCreatedAtDesc(CourseEntity course);
 
     /**
      * Find messages by course ID ordered by creation date desc
      */
-    List<MessageEntity> findByCourseIdAndIsActiveTrueOrderByCreatedAtDesc(Long courseId);
+    List<MessageEntity> findByCourseIdAndActiveTrueOrderByCreatedAtDesc(Long courseId);
 
     /**
      * Find messages by course with pagination
      */
-    Page<MessageEntity> findByCourseAndIsActiveTrue(CourseEntity course, Pageable pageable);
+    Page<MessageEntity> findByCourseAndActiveTrue(CourseEntity course, Pageable pageable);
 
     /**
      * Find messages for a specific recipient
      */
-    List<MessageEntity> findByCourseAndRecipientUserIdAndIsActiveTrueOrderByCreatedAtDesc(CourseEntity course, UUID recipientUserId);
+    List<MessageEntity> findByCourseAndRecipientUserIdAndActiveTrueOrderByCreatedAtDesc(CourseEntity course, UUID recipientUserId);
 
     /**
      * Find broadcast messages (no specific recipient)
      */
-    List<MessageEntity> findByCourseAndRecipientUserIdIsNullAndIsActiveTrueOrderByCreatedAtDesc(CourseEntity course);
+    List<MessageEntity> findByCourseAndRecipientUserIdIsNullAndActiveTrueOrderByCreatedAtDesc(CourseEntity course);
 
     /**
      * Find messages by type
      */
-    List<MessageEntity> findByMessageTypeAndIsActiveTrueOrderByCreatedAtDesc(String messageType);
+    List<MessageEntity> findByMessageTypeAndActiveTrueOrderByCreatedAtDesc(String messageType);
 
     /**
      * Find unread messages by recipient
      */
-    List<MessageEntity> findByRecipientUserIdAndIsReadFalseAndIsActiveTrueOrderByCreatedAtDesc(UUID recipientUserId);
+    List<MessageEntity> findByRecipientUserIdAndIsReadFalseAndActiveTrueOrderByCreatedAtDesc(UUID recipientUserId);
 
     /**
      * Find recent messages by course
      */
-    @Query("SELECT m FROM MessageEntity m WHERE m.course = :course AND m.isActive = true AND m.createdAt >= :since ORDER BY m.createdAt DESC")
+    @Query("SELECT m FROM MessageEntity m WHERE m.course = :course AND m.active = true AND m.createdAt >= :since ORDER BY m.createdAt DESC")
     List<MessageEntity> findRecentMessagesByCourse(@Param("course") CourseEntity course, @Param("since") LocalDateTime since);
 
     /**
      * Count unread messages by recipient
      */
-    long countByRecipientUserIdAndIsReadFalseAndIsActiveTrue(UUID recipientUserId);
+    long countByRecipientUserIdAndIsReadFalseAndActiveTrue(UUID recipientUserId);
 
     /**
      * Count messages by course
      */
-    long countByCourseAndIsActiveTrue(CourseEntity course);
+    long countByCourseAndActiveTrue(CourseEntity course);
 
     /**
      * Find messages by subject containing keyword
      */
-    List<MessageEntity> findBySubjectContainingIgnoreCaseAndIsActiveTrueOrderByCreatedAtDesc(String keyword);
+    List<MessageEntity> findBySubjectContainingIgnoreCaseAndActiveTrueOrderByCreatedAtDesc(String keyword);
 
     /**
      * Find messages within a date range
      */
-    @Query("SELECT m FROM MessageEntity m WHERE m.createdAt >= :startDate AND m.createdAt <= :endDate AND m.isActive = true ORDER BY m.createdAt DESC")
+    @Query("SELECT m FROM MessageEntity m WHERE m.createdAt >= :startDate AND m.createdAt <= :endDate AND m.active = true ORDER BY m.createdAt DESC")
     List<MessageEntity> findMessagesInDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     /**

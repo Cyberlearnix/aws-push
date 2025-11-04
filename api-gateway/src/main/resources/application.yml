@@ -6,74 +6,165 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: false  # Disable Eureka service discovery
+      httpclient:
+        connect-timeout: 10000  # Increased from 5000ms to 10000ms (10s)
+        response-timeout: 60s   # Increased from 10s to 30s
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
       routes:
+        # User service routes
+        - id: user-service-email-auth
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/email-auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - AddRequestHeader=X-Forwarded-Proto, ${server.forward-headers-strategy:https}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - AddRequestHeader=X-Forwarded-Proto, ${server.forward-headers-strategy:https}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
         - id: user-service
           uri: http://localhost:8081
           predicates:
-            - Path=/api/users/**, /api/email-auth/**, /api/admin/**
+            - Path=/api/users/**, /api/admin/**
           filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
-
-        - id: student-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/students/**
-          filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
-
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - AddRequestHeader=X-Forwarded-Proto, ${server.forward-headers-strategy:https}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+                
+        # Instructor service route
         - id: instructor-service
           uri: http://localhost:8083
           predicates:
-            - Path=/api/instructors/**
+            - Path=/api/instructors/**,/instructors/**,/api/courses/**,/courses/**,/api/instructors/{instructorId:^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$}/courses/**,/instructors/{instructorId:^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$}/courses/**
           filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
-
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+            # Rewrite paths to match the expected format
+            - RewritePath=/api/instructors/(?<segment>.*), /$\{segment}
+            - RewritePath=/instructors/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/courses/(?<segment>.*), /$\{segment}
+            - RewritePath=/courses/(?<segment>.*), /$\{segment}
+            # Handle UUID/courseId pattern: /{uuid}/{courseId}/modules/upload -> /{uuid}/courses/{courseId}/modules/upload
+            - RewritePath=/(?<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/(?<courseId>\d+)/(?<modulePath>.*), /$\{uuid}/courses/$\{courseId}/$\{modulePath}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - AddRequestHeader=X-Forwarded-Proto, ${server.forward-headers-strategy:https}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+            
+        # Course service route
         - id: course-service
-          uri: http://localhost:8084
+          uri: http://localhost:8084  # Changed from course-service to localhost for development
           predicates:
             - Path=/api/courses/**
           filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - RewritePath=/api/courses/(?<segment>.*), /${segment}
 
+        # Order service route
         - id: order-service
-          uri: http://localhost:8085
+          uri: http://localhost:8085  # Changed from order-service to localhost for development
           predicates:
             - Path=/api/orders/**
           filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - RewritePath=/api/orders/(?<segment>.*), /${segment}
 
+        # Payment service route
         - id: payment-service
-          uri: http://localhost:8086
+          uri: http://localhost:8086  # Changed from payment-service to localhost for development
           predicates:
             - Path=/api/payments/**
           filters:
-            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+            - AddRequestHeader=X-Forwarded-For, ${server.address:127.0.0.1}
+            - RewritePath=/api/payments/(?<segment>.*), /${segment}
 
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+# JWT Configuration
+jwt:
+  secret: your-256-bit-secret-make-sure-this-is-secure-and-kept-secret-1234567890
+  expiration-in-ms: 86400000  # 24 hours
 
+  # Redis configuration for rate limiting
   redis:
     host: localhost
     port: 6379
 
-# Remove Eureka client configuration since we're not using it
-# eureka:
-#   client:
-#     service-url:
-#       defaultZone: http://localhost:8761/eureka/
-#   instance:
-#     prefer-ip-address: true
+  # Global CORS configuration
+  web:
+    cors:
+      allowed-origins: "http://localhost:5173"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
 
+  # Increase memory for large requests
+  codec:
+    max-in-memory-size: 10MB
+
+# Management endpoints
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics,gateway
 
+# SpringDoc OpenAPI Configuration for Reactive API Gateway
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui.csrf.enabled: false
+
+# Logging Configuration
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
+    # Root logging level
+    root: INFO
+    
+    # Application specific
+    com.cyberlearnix.lms: DEBUG
+    
+    # Spring Cloud Gateway
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.filter.ratelimit: TRACE
+    org.springframework.cloud.gateway.handler: TRACE
+    org.springframework.cloud.gateway.route: TRACE
+    
+    # WebFlux and Netty
+    org.springframework.web.reactive: DEBUG
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.http.codec: DEBUG
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+    
+    # Security
+    org.springframework.security: TRACE
+    org.springframework.web.cors: TRACE
+    
+    # Reactor Netty
     reactor.netty: DEBUG
+    reactor.netty.http.client: DEBUG
+    reactor.netty.channel: DEBUG
+
+# Swagger security configuration
+springdoc.swagger-ui.csrf.enabled: false

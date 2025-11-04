@@ -1,7 +1,7 @@
 package com.instructor.service.repository;
 
 import com.instructor.service.entity.CourseEntity;
-import com.instructor.service.entity.InstructorEntity;
+import com.instructor.service.entity.Instructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
@@ -18,17 +19,18 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
     /**
      * Find courses by instructor
      */
-    List<CourseEntity> findByInstructor(InstructorEntity instructor);
+    List<CourseEntity> findByInstructor(Instructor instructor);
 
     /**
      * Find courses by instructor ID
      */
-    List<CourseEntity> findByInstructorId(Long instructorId);
+    @Query("SELECT c FROM CourseEntity c WHERE c.instructor.id = :instructorId")
+    List<CourseEntity> findByInstructorId(@Param("instructorId") Long instructorId);
 
     /**
      * Find published courses by instructor
      */
-    List<CourseEntity> findByInstructorAndPublishedTrue(InstructorEntity instructor);
+    List<CourseEntity> findByInstructorAndPublishedTrue(Instructor instructor);
 
     /**
      * Find all published courses
@@ -58,7 +60,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
     /**
      * Find courses by instructor with pagination
      */
-    Page<CourseEntity> findByInstructor(InstructorEntity instructor, Pageable pageable);
+    Page<CourseEntity> findByInstructor(Instructor instructor, Pageable pageable);
 
     /**
      * Custom query to find courses with modules count
@@ -75,10 +77,10 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
     /**
      * Count courses by instructor
      */
-    long countByInstructor(InstructorEntity instructor);
+    long countByInstructor(Instructor instructor);
 
     /**
      * Count published courses by instructor
      */
-    long countByInstructorAndPublishedTrue(InstructorEntity instructor);
+    long countByInstructorAndPublishedTrue(Instructor instructor);
 }

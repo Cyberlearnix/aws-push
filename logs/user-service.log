@@ -1,0 +1,377 @@
+2025-11-04 00:05:26.013 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/refresh-token
+2025-11-04 00:05:26.741 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 00:05:26.756 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/refresh-token
+2025-11-04 00:05:26.765 [http-nio-8081-exec-2] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 00:05:27.524 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(60768147<open>)] for JPA transaction
+2025-11-04 00:05:27.526 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly
+2025-11-04 00:05:27.627 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@26df7980]
+2025-11-04 00:05:27.925 [http-nio-8081-exec-2] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.id=?
+2025-11-04 00:05:27.977 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 00:05:27.978 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(60768147<open>)]
+2025-11-04 00:05:27.984 [http-nio-8081-exec-2] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 00:05:28.044 [http-nio-8081-exec-2] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 00:29:17.427 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 00:29:17.479 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 00:52:47.812 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 00:52:47.837 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 00:57:21.421 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 00:57:21.439 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 01:07:08.987 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login-password
+2025-11-04 01:07:09.029 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 01:07:09.044 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/login-password
+2025-11-04 01:07:09.170 [http-nio-8081-exec-10] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 01:07:09.440 [http-nio-8081-exec-10] INFO  c.u.u.controller.AuthController - Received login request at: /auth/login-password
+2025-11-04 01:07:09.817 [http-nio-8081-exec-10] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.email=?
+2025-11-04 01:07:10.166 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(129076535<open>)] for JPA transaction
+2025-11-04 01:07:10.172 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-11-04 01:07:10.179 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@4f7245c3]
+2025-11-04 01:07:10.202 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 01:07:10.202 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(129076535<open>)]
+2025-11-04 01:07:10.270 [http-nio-8081-exec-10] DEBUG org.hibernate.SQL - update user_entity set is_active=?,address=?,alternate_phone=?,bio=?,biography=?,country_code=?,department=?,designation=?,email=?,email_verified=?,experience_years=?,facebook=?,failed_login_attempts=?,full_name=?,instagram=?,internshala=?,language=?,last_login_at=?,linkedin=?,lockout_until=?,password=?,phone=?,photo=?,qualification=?,role=?,specialization=?,updated_at=? where id=?
+2025-11-04 01:07:10.298 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 01:07:10.713 [http-nio-8081-exec-10] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 01:07:37.217 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 01:07:37.223 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 01:10:46.973 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 01:10:46.978 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 01:14:05.656 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 01:14:05.672 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 04:14:33.060 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h28s424ms218µs700ns).
+2025-11-04 10:57:51.649 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6h43m31s239ms746µs400ns).
+2025-11-04 11:22:48.558 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login-password
+2025-11-04 11:22:48.683 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 11:22:48.726 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/login-password
+2025-11-04 11:22:48.786 [http-nio-8081-exec-8] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 11:22:49.058 [http-nio-8081-exec-8] INFO  c.u.u.controller.AuthController - Received login request at: /auth/login-password
+2025-11-04 11:22:49.284 [http-nio-8081-exec-8] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.email=?
+2025-11-04 11:22:49.810 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(1042440647<open>)] for JPA transaction
+2025-11-04 11:22:49.817 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-11-04 11:22:49.821 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@5b2912cb]
+2025-11-04 11:22:49.847 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 11:22:49.853 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(1042440647<open>)]
+2025-11-04 11:22:49.962 [http-nio-8081-exec-8] DEBUG org.hibernate.SQL - update user_entity set is_active=?,address=?,alternate_phone=?,bio=?,biography=?,country_code=?,department=?,designation=?,email=?,email_verified=?,experience_years=?,facebook=?,failed_login_attempts=?,full_name=?,instagram=?,internshala=?,language=?,last_login_at=?,linkedin=?,lockout_until=?,password=?,phone=?,photo=?,qualification=?,role=?,specialization=?,updated_at=? where id=?
+2025-11-04 11:22:50.014 [http-nio-8081-exec-8] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 11:22:50.406 [http-nio-8081-exec-8] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 12:26:18.687 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login-password
+2025-11-04 12:26:18.748 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 12:26:18.766 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/login-password
+2025-11-04 12:26:18.813 [http-nio-8081-exec-10] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 12:26:18.911 [http-nio-8081-exec-10] INFO  c.u.u.controller.AuthController - Received login request at: /auth/login-password
+2025-11-04 12:26:19.002 [http-nio-8081-exec-10] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.email=?
+2025-11-04 12:26:19.243 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(402119083<open>)] for JPA transaction
+2025-11-04 12:26:19.244 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-11-04 12:26:19.246 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@3d3c3a3e]
+2025-11-04 12:26:19.253 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 12:26:19.256 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(402119083<open>)]
+2025-11-04 12:26:19.281 [http-nio-8081-exec-10] DEBUG org.hibernate.SQL - update user_entity set is_active=?,address=?,alternate_phone=?,bio=?,biography=?,country_code=?,department=?,designation=?,email=?,email_verified=?,experience_years=?,facebook=?,failed_login_attempts=?,full_name=?,instagram=?,internshala=?,language=?,last_login_at=?,linkedin=?,lockout_until=?,password=?,phone=?,photo=?,qualification=?,role=?,specialization=?,updated_at=? where id=?
+2025-11-04 12:26:19.302 [http-nio-8081-exec-10] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 12:26:19.349 [http-nio-8081-exec-10] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 12:50:43.504 [main] INFO  c.u.u.UserServiceApplication - Starting UserServiceApplication using Java 21.0.8 with PID 20856 (C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices\user-service\build\classes\java\main started by sridh in C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices)
+2025-11-04 12:50:43.518 [main] DEBUG c.u.u.UserServiceApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-11-04 12:50:43.525 [main] INFO  c.u.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-04 12:50:57.915 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 12:50:57.922 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-04 12:50:58.511 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 561 ms. Found 1 JPA repository interface.
+2025-11-04 12:50:58.600 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 12:50:58.605 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-04 12:50:58.752 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.userservice.userservice.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-04 12:50:58.755 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 82 ms. Found 0 Redis repository interfaces.
+2025-11-04 12:51:02.091 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1b7c0e16-cea1-3d88-984a-38729ddf3570
+2025-11-04 12:51:11.300 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-11-04 12:51:11.479 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-11-04 12:51:11.498 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-04 12:51:11.500 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-11-04 12:51:13.138 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-04 12:51:13.312 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 29422 ms
+2025-11-04 12:51:23.571 [main] DEBUG o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default'
+2025-11-04 12:51:25.723 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-04 12:51:25.853 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-04 12:51:26.603 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@558575fe
+2025-11-04 12:51:26.608 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-04 12:51:26.872 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-04 12:51:34.676 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-04 12:51:35.361 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:51:35.531 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:51:35.972 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:51:36.642 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:51:37.026 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:51:43.152 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+2025-11-04 12:51:43.575 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-04 12:51:44.842 [main] DEBUG o.s.s.c.a.a.c.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-04 12:51:47.516 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@c91ced9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@46e03c31, org.springframework.security.web.context.SecurityContextHolderFilter@3c0403a, org.springframework.security.web.header.HeaderWriterFilter@1fb66050, org.springframework.web.filter.CorsFilter@24cf1abf, org.springframework.security.web.authentication.logout.LogoutFilter@36f8c95a, com.userservice.userservice.security.JwtAuthFilter@424a152f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7b6bcbee, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@511936ad, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b84007e, org.springframework.security.web.session.SessionManagementFilter@136dc575, org.springframework.security.web.access.ExceptionTranslationFilter@68bbd5c2, org.springframework.security.web.access.intercept.AuthorizationFilter@579e8a7]
+2025-11-04 12:51:50.170 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Starting RedisMessageListenerContainer...
+2025-11-04 12:51:50.173 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Postpone listening for Redis messages until actual listeners are added
+2025-11-04 12:51:51.536 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 12:51:51.923 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-11-04 12:51:51.995 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path ''
+2025-11-04 12:51:53.025 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 12:51:53.089 [main] INFO  c.u.u.UserServiceApplication - Started UserServiceApplication in 76.461 seconds (process running for 80.839)
+2025-11-04 12:52:28.846 [http-nio-8081-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-04 12:52:28.847 [http-nio-8081-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-04 12:52:28.855 [http-nio-8081-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2025-11-04 12:52:28.966 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 12:52:34.283 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 12:52:34.364 [http-nio-8081-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+org.springframework.web.util.pattern.PatternParseException: Expected close capture character after variable name }
+	at org.springframework.web.util.pattern.InternalPathPatternParser.skipCaptureRegex(InternalPathPatternParser.java:233)
+	at org.springframework.web.util.pattern.InternalPathPatternParser.parse(InternalPathPatternParser.java:155)
+	at org.springframework.web.util.pattern.PathPatternParser.parse(PathPatternParser.java:129)
+	at org.springframework.web.servlet.handler.PathPatternMatchableHandlerMapping.lambda$match$0(PathPatternMatchableHandlerMapping.java:64)
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708)
+	at org.springframework.web.servlet.handler.PathPatternMatchableHandlerMapping.match(PathPatternMatchableHandlerMapping.java:62)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector$LookupPathMatchableHandlerMapping.match(HandlerMappingIntrospector.java:546)
+	at org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher.matcher(MvcRequestMatcher.java:95)
+	at org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager.check(RequestMatcherDelegatingAuthorizationManager.java:79)
+	at org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager.check(RequestMatcherDelegatingAuthorizationManager.java:48)
+	at org.springframework.security.authorization.ObservationAuthorizationManager.check(ObservationAuthorizationManager.java:63)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:95)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at com.userservice.userservice.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:73)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-11-04 12:52:34.448 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /error
+2025-11-04 12:52:34.482 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /error
+2025-11-04 12:52:34.568 [http-nio-8081-exec-2] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 12:52:36.639 [http-nio-8081-exec-2] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 12:52:36.745 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 12:55:41.416 [main] INFO  c.u.u.UserServiceApplication - Starting UserServiceApplication using Java 21.0.8 with PID 8044 (C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices\user-service\build\classes\java\main started by sridh in C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices)
+2025-11-04 12:55:41.424 [main] DEBUG c.u.u.UserServiceApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-11-04 12:55:41.430 [main] INFO  c.u.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-04 12:55:47.983 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 12:55:47.988 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-04 12:55:48.525 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 508 ms. Found 1 JPA repository interface.
+2025-11-04 12:55:48.569 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 12:55:48.571 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-04 12:55:48.641 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.userservice.userservice.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-04 12:55:48.641 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 25 ms. Found 0 Redis repository interfaces.
+2025-11-04 12:55:49.966 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1b7c0e16-cea1-3d88-984a-38729ddf3570
+2025-11-04 12:55:53.247 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-11-04 12:55:53.285 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-11-04 12:55:53.291 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-04 12:55:53.294 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-11-04 12:55:53.614 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-04 12:55:53.616 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 11948 ms
+2025-11-04 12:55:56.045 [main] DEBUG o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default'
+2025-11-04 12:55:57.184 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-04 12:55:57.246 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-04 12:55:57.733 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@656c0eae
+2025-11-04 12:55:57.736 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-04 12:55:57.839 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-04 12:56:03.056 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-04 12:56:04.280 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:56:04.417 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:56:05.162 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:56:05.693 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:56:06.057 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 12:56:11.672 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+2025-11-04 12:56:11.944 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-04 12:56:12.590 [main] DEBUG o.s.s.c.a.a.c.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-04 12:56:13.965 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7af45006, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4be7661, org.springframework.security.web.context.SecurityContextHolderFilter@392a091, org.springframework.security.web.header.HeaderWriterFilter@14a3d15b, org.springframework.web.filter.CorsFilter@349c9bfa, org.springframework.security.web.authentication.logout.LogoutFilter@1babd50e, com.userservice.userservice.security.JwtAuthFilter@3595086b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@49c51eb7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4fc50fee, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1479c527, org.springframework.security.web.session.SessionManagementFilter@14d3bee8, org.springframework.security.web.access.ExceptionTranslationFilter@57f2a68c, org.springframework.security.web.access.intercept.AuthorizationFilter@26c09f3f]
+2025-11-04 12:56:16.468 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Starting RedisMessageListenerContainer...
+2025-11-04 12:56:16.472 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Postpone listening for Redis messages until actual listeners are added
+2025-11-04 12:56:17.868 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 12:56:18.168 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-11-04 12:56:18.230 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path ''
+2025-11-04 12:56:19.270 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 12:56:19.312 [main] INFO  c.u.u.UserServiceApplication - Started UserServiceApplication in 41.481 seconds (process running for 43.168)
+2025-11-04 12:56:48.184 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-04 12:56:48.185 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-04 12:56:48.191 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2025-11-04 12:56:48.288 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 12:56:48.325 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 12:58:13.078 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 12:58:13.085 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 13:01:56.504 [main] INFO  c.u.u.UserServiceApplication - Starting UserServiceApplication using Java 21.0.8 with PID 13264 (C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices\user-service\build\classes\java\main started by sridh in C:\Users\sridh\OneDrive\Desktop\cyber-lms-microservices\cyber-lms-microservices)
+2025-11-04 13:01:56.510 [main] DEBUG c.u.u.UserServiceApplication - Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-11-04 13:01:56.514 [main] INFO  c.u.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-04 13:02:07.515 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 13:02:07.521 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-04 13:02:09.576 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 2024 ms. Found 1 JPA repository interface.
+2025-11-04 13:02:09.742 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-04 13:02:09.747 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-04 13:02:09.855 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.userservice.userservice.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-04 13:02:09.865 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 58 ms. Found 0 Redis repository interfaces.
+2025-11-04 13:02:15.258 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1b7c0e16-cea1-3d88-984a-38729ddf3570
+2025-11-04 13:02:22.768 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-11-04 13:02:22.816 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-11-04 13:02:22.826 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-04 13:02:22.827 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-11-04 13:02:23.316 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-04 13:02:23.317 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 26029 ms
+2025-11-04 13:02:26.519 [main] DEBUG o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default'
+2025-11-04 13:02:27.749 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-04 13:02:27.835 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-04 13:02:28.609 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@27f31d91
+2025-11-04 13:02:28.613 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-04 13:02:28.814 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-04 13:02:32.554 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-04 13:02:33.098 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 13:02:33.220 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 13:02:33.491 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 13:02:33.747 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 13:02:33.898 [main] DEBUG o.s.o.j.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler - Creating new EntityManager for shared EntityManager invocation
+2025-11-04 13:02:38.110 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+2025-11-04 13:02:38.602 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-04 13:02:43.053 [main] DEBUG o.s.s.c.a.a.c.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-11-04 13:02:45.309 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7fa9e773, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@58ef1543, org.springframework.security.web.context.SecurityContextHolderFilter@1228a579, org.springframework.security.web.header.HeaderWriterFilter@3be4e71c, org.springframework.web.filter.CorsFilter@7af45006, org.springframework.security.web.authentication.logout.LogoutFilter@40c65a03, com.userservice.userservice.security.JwtAuthFilter@26612078, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f997702, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1928dc66, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4be7661, org.springframework.security.web.session.SessionManagementFilter@568cc1c5, org.springframework.security.web.access.ExceptionTranslationFilter@326c526a, org.springframework.security.web.access.intercept.AuthorizationFilter@191a3448]
+2025-11-04 13:02:49.595 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Starting RedisMessageListenerContainer...
+2025-11-04 13:02:49.597 [main] DEBUG o.s.d.r.l.RedisMessageListenerContainer - Postpone listening for Redis messages until actual listeners are added
+2025-11-04 13:02:50.970 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 13:02:51.262 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-11-04 13:02:51.350 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path ''
+2025-11-04 13:02:52.622 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-11-04 13:02:53.564 [main] INFO  c.u.u.UserServiceApplication - Started UserServiceApplication in 63.131 seconds (process running for 66.459)
+2025-11-04 13:14:56.290 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-04 13:14:56.319 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-04 13:14:56.589 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 269 ms
+2025-11-04 13:14:56.901 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 13:14:57.548 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 13:14:57.599 [http-nio-8081-exec-1] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 13:14:58.134 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(577078114<open>)] for JPA transaction
+2025-11-04 13:14:58.137 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly
+2025-11-04 13:14:58.308 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@2aed8f45]
+2025-11-04 13:14:59.176 [http-nio-8081-exec-1] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.id=?
+2025-11-04 13:15:01.176 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 13:15:01.182 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(577078114<open>)]
+2025-11-04 13:15:01.197 [http-nio-8081-exec-1] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 13:15:01.755 [http-nio-8081-exec-1] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 13:17:19.587 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 13:17:19.609 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/users/9473ad23-db4b-48dd-819d-4a7c11018c0f
+2025-11-04 13:17:19.614 [http-nio-8081-exec-3] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 13:17:19.619 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(1076918691<open>)] for JPA transaction
+2025-11-04 13:17:19.620 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly
+2025-11-04 13:17:19.622 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@440ff57d]
+2025-11-04 13:17:19.622 [http-nio-8081-exec-3] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.id=?
+2025-11-04 13:17:19.626 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 13:17:19.627 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(1076918691<open>)]
+2025-11-04 13:17:19.627 [http-nio-8081-exec-3] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 13:17:19.632 [http-nio-8081-exec-3] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 13:29:13.307 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login-password
+2025-11-04 13:29:13.379 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 13:29:13.402 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/login-password
+2025-11-04 13:29:13.417 [http-nio-8081-exec-5] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 13:29:14.120 [http-nio-8081-exec-5] INFO  c.u.u.controller.AuthController - Received login request at: /auth/login-password
+2025-11-04 13:29:14.918 [http-nio-8081-exec-5] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.email=?
+2025-11-04 13:29:15.324 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(1553570135<open>)] for JPA transaction
+2025-11-04 13:29:15.324 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-11-04 13:29:15.330 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@5ea2ea4b]
+2025-11-04 13:29:15.383 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 13:29:15.384 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(1553570135<open>)]
+2025-11-04 13:29:15.716 [http-nio-8081-exec-5] DEBUG org.hibernate.SQL - update user_entity set is_active=?,address=?,alternate_phone=?,bio=?,biography=?,country_code=?,department=?,designation=?,email=?,email_verified=?,experience_years=?,facebook=?,failed_login_attempts=?,full_name=?,instagram=?,internshala=?,language=?,last_login_at=?,linkedin=?,lockout_until=?,password=?,phone=?,photo=?,qualification=?,role=?,specialization=?,updated_at=? where id=?
+2025-11-04 13:29:15.805 [http-nio-8081-exec-5] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 13:29:15.900 [http-nio-8081-exec-5] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 14:35:25.036 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login-password
+2025-11-04 14:35:25.192 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-11-04 14:35:25.235 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured POST /auth/login-password
+2025-11-04 14:35:25.289 [http-nio-8081-exec-7] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-11-04 14:35:25.599 [http-nio-8081-exec-7] INFO  c.u.u.controller.AuthController - Received login request at: /auth/login-password
+2025-11-04 14:35:25.953 [http-nio-8081-exec-7] DEBUG org.hibernate.SQL - select ue1_0.id,ue1_0.is_active,ue1_0.address,ue1_0.alternate_phone,ue1_0.bio,ue1_0.biography,ue1_0.country_code,ue1_0.created_at,ue1_0.department,ue1_0.designation,ue1_0.email,ue1_0.email_verified,ue1_0.experience_years,ue1_0.facebook,ue1_0.failed_login_attempts,ue1_0.full_name,ue1_0.instagram,ue1_0.internshala,ue1_0.language,ue1_0.last_login_at,ue1_0.linkedin,ue1_0.lockout_until,ue1_0.password,ue1_0.phone,ue1_0.photo,ue1_0.qualification,ue1_0.role,ue1_0.specialization,ue1_0.updated_at from user_entity ue1_0 where ue1_0.email=?
+2025-11-04 14:35:26.404 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(921336301<open>)] for JPA transaction
+2025-11-04 14:35:26.408 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-11-04 14:35:26.431 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@339c0801]
+2025-11-04 14:35:26.475 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-11-04 14:35:26.475 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(921336301<open>)]
+2025-11-04 14:35:26.556 [http-nio-8081-exec-7] DEBUG org.hibernate.SQL - update user_entity set is_active=?,address=?,alternate_phone=?,bio=?,biography=?,country_code=?,department=?,designation=?,email=?,email_verified=?,experience_years=?,facebook=?,failed_login_attempts=?,full_name=?,instagram=?,internshala=?,language=?,last_login_at=?,linkedin=?,lockout_until=?,password=?,phone=?,photo=?,qualification=?,role=?,specialization=?,updated_at=? where id=?
+2025-11-04 14:35:26.591 [http-nio-8081-exec-7] DEBUG o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-11-04 14:35:26.835 [http-nio-8081-exec-7] DEBUG o.s.o.j.s.OpenEntityManagerInViewInterceptor - Closing JPA EntityManager in OpenEntityManagerInViewInterceptor

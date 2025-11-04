@@ -39,6 +39,10 @@ public class CourseEntity {
     @Column(nullable = false)
     private Boolean published = false;
 
+    @Builder.Default
+    @Column(name = "is_active", nullable = false)
+    private Boolean active = true;
+
     @Column(length = 50)
     private String category;
 
@@ -60,7 +64,7 @@ public class CourseEntity {
     // Many-to-One relationship with instructor
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", nullable = false)
-    private InstructorEntity instructor;
+    private Instructor instructor;
 
     // One-to-Many relationship with modules
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

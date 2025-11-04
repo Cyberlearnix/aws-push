@@ -33,7 +33,7 @@ public class StudentController {
     public ResponseEntity<StudentProgressResponse> getStudent(
             @PathVariable("id") UUID instructorId,
             @PathVariable Long courseId,
-            @PathVariable Long studentId
+            @PathVariable UUID studentId
     ) {
         return ResponseEntity.ok(studentService.getStudentProgress(courseId, studentId));
     }

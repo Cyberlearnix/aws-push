@@ -1,31 +1,37 @@
 package com.userservice.userservice.service;
 
+import lombok.extern.slf4j.Slf4j;
+
+import com.cyberlearnix.shared.dto.UserDTO;
+import com.cyberlearnix.shared.dto.event.UserCreatedEvent;
+import com.cyberlearnix.shared.enums.UserRole;
 import com.userservice.userservice.dto.OtpVerificationRequestDTO;
 import com.userservice.userservice.dto.UpdateUserRequestDTO;
 import com.userservice.userservice.dto.UserPublicDTO;
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
+import com.userservice.userservice.event.UserEventPublisher;
 import com.userservice.userservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.userservice.userservice.util.PasswordValidatorUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final OtpCacheService otpCacheService;
     private final PasswordEncoder passwordEncoder;
+    private final UserEventPublisher userEventPublisher;
 
     public boolean existsByEmail(String email) {
         log.debug("Checking if user exists by email: {}", maskEmail(email));
@@ -43,64 +49,102 @@ public class UserService {
                 .isPresent();
     }
 
-    public UserPublicDTO getPublicProfile(String email) {
+    public Optional<UserPublicDTO> findByEmail(String email) {
+        log.debug("Looking up user by email: {}", maskEmail(email));
         return userRepository.findByEmail(email)
-                .map(user -> UserPublicDTO.builder()
-                        .id(user.getId())
-                        .fullName(user.getFullName())
-                        .email(user.getEmail())
-                        .phone(user.getPhone())
-                        .alternatePhone(user.getAlternatePhone())
-                        .photo(user.getPhoto())
-                        .address(user.getAddress())
-                        .language(user.getLanguage())
-                        .biography(user.getBiography())
-                        .linkedin(user.getLinkedin())
-                        .instagram(user.getInstagram())
-                        .facebook(user.getFacebook())
-                        .internshala(user.getInternshala())
-                        .role(user.getRole()) // ✅ Include role in response
-                        .build())
+                .map(user -> {
+                    log.debug("Found user with email: {}", maskEmail(email));
+                    return UserPublicDTO.builder()
+                            .id(user.getId())
+                            .fullName(user.getFullName())
+                            .email(user.getEmail())
+                            .phone(user.getPhone())
+                            .alternatePhone(user.getAlternatePhone())
+                            .photo(user.getPhoto())
+                            .address(user.getAddress())
+                            .language(user.getLanguage())
+                            .biography(user.getBiography())
+                            .linkedin(user.getLinkedin())
+                            .instagram(user.getInstagram())
+                            .facebook(user.getFacebook())
+                            .internshala(user.getInternshala())
+                            .role(user.getRole())
+                            .build();
+                });
+    }
+
+    public UserPublicDTO getPublicProfile(String email) {
+        return findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found for email: " + email));
     }
 
+    @Transactional
     public UserEntity registerUser(String email, String fullName, String phone, String password) {
         String requestId = UUID.randomUUID().toString().substring(0, 8);
         log.info("[{}] Starting user registration for email: {}", requestId, maskEmail(email));
         
+        // Default role is STUDENT
+        return registerUserWithRole(email, fullName, phone, password, com.cyberlearnix.shared.enums.UserRole.STUDENT);
+    }
+    
+    @Transactional
+    public UserEntity registerUserWithRole(String email, String fullName, String phone, String password, 
+                                         com.cyberlearnix.shared.enums.UserRole role) {
+        String requestId = UUID.randomUUID().toString().substring(0, 8);
+        
+        log.info("[{}] Starting {} registration for email: {}", requestId, role, maskEmail(email));
+        
         if (email == null || email.isBlank()) {
             log.error("[{}] ❌ Cannot register user: Email is null or blank", requestId);
-            throw new IllegalArgumentException("Email cannot be null or blank");
+            throw new IllegalArgumentException("Email is required");
         }
-
-        log.info("[{}] 📥 Registering user - FullName: {}, Phone: {}", requestId, fullName, phone != null ? phone.replaceAll(".(?=.{2})", "*") : "null");
-
-        log.info("[{}] Checking if user already exists", requestId);
-        Optional<UserEntity> existingOpt = userRepository.findByEmail(email);
-        UserEntity user = existingOpt.orElse(new UserEntity());
         
-        if (existingOpt.isPresent()) {
-            log.info("[{}] Updating existing user record", requestId);
-        } else {
-            log.info("[{}] Creating new user record", requestId);
+        log.info("[{}] 📥 Registering user - FullName: {}, Phone: {}", 
+                requestId, fullName, phone);
+                
+        log.info("[{}] Checking if user already exists", requestId);
+        if (userRepository.existsByEmail(email)) {
+            log.error("[{}] ❌ User with email {} already exists", requestId, maskEmail(email));
+            throw new IllegalArgumentException("Email already in use");
         }
 
+        // Create new user
+        log.info("[{}] Creating new user record for {}", requestId, maskEmail(email));
+        UserEntity user = new UserEntity();
         user.setEmail(email);
         user.setFullName(fullName);
         user.setPhone(phone);
         
         log.info("[{}] Validating password strength", requestId);
-        // Validate password strength and non-equality to email/username
-        PasswordValidatorUtil.validateOrThrow(password, email, fullName);
+        validatePasswordStrength(password, email, fullName);
         
         log.info("[{}] Encoding password", requestId);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole(UserRole.STUDENT);
+        user.setRole(role);
         user.setEmailVerified(true);
+        user.setActive(true);
+        
+        // Set default values for instructor-specific fields
+        if (role == com.cyberlearnix.shared.enums.UserRole.INSTRUCTOR) {
+            user.setDepartment("");
+            user.setDesignation("");
+            user.setQualification("");
+            user.setBio("");
+            user.setSpecialization("");
+            user.setExperienceYears(0);
+        }
 
         log.info("[{}] Saving user to database", requestId);
         UserEntity savedUser = userRepository.save(user);
-        log.info("[{}] ✅ User saved successfully - ID: {}, Email: {}, Role: {}", requestId, savedUser.getId(), maskEmail(savedUser.getEmail()), savedUser.getRole());
+        log.info("[{}] ✅ User saved successfully - ID: {}, Email: {}, Role: {}", 
+                requestId, savedUser.getId(), maskEmail(savedUser.getEmail()), savedUser.getRole());
+        
+        // Publish event if user is an INSTRUCTOR
+        if (role == com.cyberlearnix.shared.enums.UserRole.INSTRUCTOR) {
+            log.info("[{}] Publishing UserCreatedEvent for new instructor: {}", requestId, savedUser.getId());
+            userEventPublisher.publishUserCreatedEvent(convertToUserDTO(savedUser));
+        }
+
         return savedUser;
     }
 
@@ -126,7 +170,7 @@ public class UserService {
         }
 
         // ✅ Always enforce role ADMIN (even if user already exists)
-        admin.setRole(UserRole.ADMIN);
+        admin.setRole(com.cyberlearnix.shared.enums.UserRole.ADMIN);
         admin.setEmailVerified(true);
 
         log.info("[{}] Saving admin to database", requestId);
@@ -155,8 +199,13 @@ public class UserService {
                 .instagram(user.getInstagram())
                 .facebook(user.getFacebook())
                 .internshala(user.getInternshala())
-
                 .role(user.getRole())
+                .department(user.getDepartment())
+                .designation(user.getDesignation())
+                .qualification(user.getQualification())
+                .bio(user.getBio())
+                .specialization(user.getSpecialization())
+                .experienceYears(user.getExperienceYears())
                 .build()
         ).toList();
     }
@@ -189,8 +238,27 @@ public class UserService {
 
         if (dto.getPassword() != null) {
             // Validate new password against current user email and name
-            PasswordValidatorUtil.validateOrThrow(dto.getPassword(), user.getEmail(), user.getFullName());
+            validatePasswordStrength(dto.getPassword(), user.getEmail(), user.getFullName());
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
+        // Handle instructor fields if user is becoming an instructor
+        boolean isBecomingInstructor = Boolean.TRUE.equals(dto.getBecomeInstructor());
+        if (isBecomingInstructor && user.getRole() != UserRole.INSTRUCTOR) {
+            user.setRole(UserRole.INSTRUCTOR);
+            // Publish event to create instructor profile
+            log.info("Publishing UserCreatedEvent for new instructor: {}", user.getId());
+            userEventPublisher.publishUserCreatedEvent(convertToUserDTO(user));
+        }
+
+        // Set instructor-specific fields (only if user is instructor or becoming one)
+        if (user.getRole() == UserRole.INSTRUCTOR || Boolean.TRUE.equals(dto.getBecomeInstructor())) {
+            if (dto.getDepartment() != null) user.setDepartment(dto.getDepartment());
+            if (dto.getDesignation() != null) user.setDesignation(dto.getDesignation());
+            if (dto.getQualification() != null) user.setQualification(dto.getQualification());
+            if (dto.getBio() != null) user.setBio(dto.getBio());
+            if (dto.getSpecialization() != null) user.setSpecialization(dto.getSpecialization());
+            if (dto.getExperienceYears() != null) user.setExperienceYears(dto.getExperienceYears());
         }
 
         userRepository.save(user);
@@ -205,6 +273,7 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+
     @Transactional
     public void deleteOwnAccount(UUID userId, OtpVerificationRequestDTO dto) {
         UserEntity user = userRepository.findById(userId)
@@ -218,12 +287,13 @@ public class UserService {
         userRepository.delete(user);          // Delete account
     }
 
+// ... (rest of the code remains the same)
 
     public UserEntity getUserByEmail(String email) {
         log.debug("Fetching user by email: {}", maskEmail(email));
         return userRepository.findByEmail(email)
                 .map(user -> {
-                    log.debug("User found - ID: {}, Role: {}, Active: {}", user.getId(), user.getRole(), user.getIsActive());
+                    log.debug("User found - ID: {}, Role: {}, Active: {}", user.getId(), user.getRole(), user.isActive());
                     return user;
                 })
                 .orElseThrow(() -> {
@@ -254,6 +324,12 @@ public class UserService {
                 .facebook(u.getFacebook())
                 .internshala(u.getInternshala())
                 .role(u.getRole())
+                .department(u.getDepartment())
+                .designation(u.getDesignation())
+                .qualification(u.getQualification())
+                .bio(u.getBio())
+                .specialization(u.getSpecialization())
+                .experienceYears(u.getExperienceYears())
                 .build();
     }
 
@@ -275,7 +351,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Validate new password against email and user's full name
-        PasswordValidatorUtil.validateOrThrow(newPassword, email, user.getFullName());
+        validatePasswordStrength(newPassword, email, user.getFullName());
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
@@ -284,7 +360,7 @@ public class UserService {
 
     public void setActive(UUID userId, boolean active) {
         UserEntity user = getUserById(userId);
-        user.setIsActive(active);
+        user.setActive(active);
         userRepository.save(user);
     }
 
@@ -295,10 +371,72 @@ public class UserService {
         return savedUser;
     }
     
+    private void validatePasswordStrength(String password, String email, String fullName) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password is required and cannot be empty");
+        }
+
+        String pwd = password.trim();
+
+        if (pwd.length() < 8) {
+            throw new IllegalArgumentException("Password should be minimum 8 characters long (current: " + pwd.length() + " characters)");
+        }
+
+        // Check for special characters
+        boolean hasSpecialChar = false;
+        for (int i = 0; i < pwd.length(); i++) {
+            char c = pwd.charAt(i);
+            if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+                break;
+            }
+        }
+        if (!hasSpecialChar) {
+            throw new IllegalArgumentException("Password must contain at least one special character (!@#$%^&*()_+-=[]{}|;:,.<>?)");
+        }
+
+        // Compare ignoring case and whitespace
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            String name = fullName.trim();
+            if (pwd.equalsIgnoreCase(name)) {
+                throw new IllegalArgumentException("Password cannot be the same as your full name for security reasons");
+            }
+        }
+
+        if (email != null && !email.trim().isEmpty()) {
+            String e = email.trim();
+            String local = e;
+            int at = e.indexOf('@');
+            if (at > 0) {
+                local = e.substring(0, at);
+            }
+            if (pwd.equalsIgnoreCase(e) || pwd.equalsIgnoreCase(local)) {
+                throw new IllegalArgumentException("Password cannot be the same as your email address for security reasons");
+            }
+        }
+    }
+
     private String maskEmail(String email) {
         if (email == null || email.length() <= 3) return email;
         int atIndex = email.indexOf('@');
         if (atIndex <= 1) return email;
         return email.charAt(0) + "***" + email.substring(atIndex);
+    }
+    
+    private com.cyberlearnix.shared.dto.UserDTO convertToUserDTO(UserEntity user) {
+        return com.cyberlearnix.shared.dto.UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .phone(user.getPhone())
+                .role(com.cyberlearnix.shared.enums.UserRole.valueOf(user.getRole().name()))
+                .department(user.getDepartment())
+                .designation(user.getDesignation())
+                .qualification(user.getQualification())
+                .bio(user.getBio())
+                .specialization(user.getSpecialization())
+                .experienceYears(user.getExperienceYears())
+                .isActive(user.isActive())
+                .build();
     }
 }

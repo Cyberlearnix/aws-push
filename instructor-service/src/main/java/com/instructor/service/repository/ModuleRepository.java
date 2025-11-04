@@ -26,12 +26,12 @@ public interface ModuleRepository extends JpaRepository<ModuleEntity, Long> {
     /**
      * Find published modules by course
      */
-    List<ModuleEntity> findByCourseAndIsPublishedTrueOrderByOrderIndexAsc(CourseEntity course);
+    List<ModuleEntity> findByCourseAndPublishedTrueOrderByOrderIndexAsc(CourseEntity course);
 
     /**
      * Find modules by content type
      */
-    List<ModuleEntity> findByContentTypeAndIsPublishedTrue(String contentType);
+    List<ModuleEntity> findByContentTypeAndPublishedTrue(String contentType);
 
     /**
      * Find module by course and order index
@@ -46,7 +46,7 @@ public interface ModuleRepository extends JpaRepository<ModuleEntity, Long> {
     /**
      * Count published modules by course
      */
-    long countByCourseAndIsPublishedTrue(CourseEntity course);
+    long countByCourseAndPublishedTrue(CourseEntity course);
 
     /**
      * Get max order index for a course
@@ -57,11 +57,11 @@ public interface ModuleRepository extends JpaRepository<ModuleEntity, Long> {
     /**
      * Find modules with specific duration range
      */
-    @Query("SELECT m FROM ModuleEntity m WHERE m.duration >= :minDuration AND m.duration <= :maxDuration AND m.isPublished = true")
+    @Query("SELECT m FROM ModuleEntity m WHERE m.duration >= :minDuration AND m.duration <= :maxDuration AND m.published = true")
     List<ModuleEntity> findByDurationRange(@Param("minDuration") Integer minDuration, @Param("maxDuration") Integer maxDuration);
 
     /**
      * Search modules by title containing keyword
      */
-    List<ModuleEntity> findByTitleContainingIgnoreCaseAndIsPublishedTrue(String keyword);
+    List<ModuleEntity> findByTitleContainingIgnoreCaseAndPublishedTrue(String keyword);
 }

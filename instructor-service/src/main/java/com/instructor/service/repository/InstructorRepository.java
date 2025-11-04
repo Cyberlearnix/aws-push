@@ -1,6 +1,6 @@
 package com.instructor.service.repository;
 
-import com.instructor.service.entity.InstructorEntity;
+import com.instructor.service.entity.Instructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,42 +11,36 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface InstructorRepository extends JpaRepository<InstructorEntity, Long> {
+public interface InstructorRepository extends JpaRepository<Instructor, Long> {
+
+    /**
+     * Find instructor by email
+     */
+    Optional<Instructor> findByEmail(String email);
 
     /**
      * Find instructor by user ID
      */
-    Optional<InstructorEntity> findByUserId(UUID userId);
+    @Query("SELECT i FROM Instructor i WHERE i.userId = :userId")
+    Optional<Instructor> findByUserUuid(@Param("userId") UUID userId);
 
     /**
-     * Find active instructors by department
+     * Check if instructor exists by email
      */
-    List<InstructorEntity> findByDepartmentAndIsActiveTrue(String department);
-
-    /**
-     * Find all active instructors
-     */
-    List<InstructorEntity> findByIsActiveTrue();
+    boolean existsByEmail(String email);
 
     /**
      * Check if instructor exists by user ID
      */
+    @Query("SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END FROM Instructor i WHERE i.userId = :userId")
+    boolean existsByUserUuid(@Param("userId") UUID userId);
+
+    /**
+     * Find all active instructors
+     */
+    List<Instructor> findByActiveTrue();
+    /**
+     * Check if instructor exists by user ID
+     */
     boolean existsByUserId(UUID userId);
-
-    /**
-     * Find instructors by specialization
-     */
-    List<InstructorEntity> findBySpecializationContainingIgnoreCaseAndIsActiveTrue(String specialization);
-
-    /**
-     * Custom query to find instructors with course count
-     */
-    @Query("SELECT i FROM InstructorEntity i LEFT JOIN FETCH i.courses c WHERE i.isActive = true")
-    List<InstructorEntity> findActiveInstructorsWithCourses();
-
-    /**
-     * Find instructors by experience years range
-     */
-    @Query("SELECT i FROM InstructorEntity i WHERE i.experienceYears >= :minYears AND i.experienceYears <= :maxYears AND i.isActive = true")
-    List<InstructorEntity> findByExperienceYearsRange(@Param("minYears") Integer minYears, @Param("maxYears") Integer maxYears);
 }

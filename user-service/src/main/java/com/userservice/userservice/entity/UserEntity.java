@@ -1,7 +1,8 @@
 package com.userservice.userservice.entity;
 
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,10 +24,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Hibernate 6+ UUID generator
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
@@ -35,6 +37,7 @@ public class UserEntity {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    @Size(min = 10, max = 50, message = "Phone number must be between 10 and 50 characters")
     @Column(nullable = false, length = 50)
     private String phone;
 
@@ -50,16 +53,37 @@ public class UserEntity {
     private String facebook;
     private String internshala;
 
+    @Column(length = 100)
+    private String department;
+
+    @Column(length = 100)
+    private String designation;
+
+    @Column(length = 100)
+    private String qualification;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    @Column(length = 100)
+    private String specialization;
+
+    private Integer experienceYears;
+
+    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    private Boolean active = true;
+    
+    public boolean isActive() {
+        return Boolean.TRUE.equals(active);
+    }
+
     @Column(nullable = false)
     private String password; // BCrypt hash
 
     @Builder.Default
     @Column(nullable = false)
     private Boolean emailVerified = false;
-
-    @Builder.Default
-    @Column(nullable = false)
-    private Boolean isActive = true;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -71,18 +95,21 @@ public class UserEntity {
     @Column(length = 500)
     private String biography;
 
+    @Size(max = 50, message = "Language must be at most 50 characters")
+    @Column(length = 50)
     private String language;
 
+    @Size(max = 50, message = "Alternate phone must be at most 50 characters")
+    @Column(name = "alternate_phone", length = 50)
     private String alternatePhone;
 
     @Column(length = 100)
     private String photo; // URL or key
 
-    // NEW: often present in your responses
-    @Column(length = 10)
+    @Size(max = 20, message = "Country code must be at most 20 characters")
+    @Column(name = "country_code", length = 20)
     private String countryCode;
 
-    // --- Lockout fields ---
     @Builder.Default
     @Column(
             name = "failed_login_attempts",

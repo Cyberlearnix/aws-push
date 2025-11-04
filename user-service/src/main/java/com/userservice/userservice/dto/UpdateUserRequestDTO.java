@@ -23,4 +23,12 @@ public class UpdateUserRequestDTO {
 
     // ✅ New field: Optional flag for instructor request
     private Boolean becomeInstructor;
+
+    // --- Instructor-specific fields (only used if becomeInstructor is true) ---
+    private String department;
+    private String designation;
+    private String qualification;
+    private String bio;
+    private String specialization;
+    private Integer experienceYears;
 }

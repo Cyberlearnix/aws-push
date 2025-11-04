@@ -1,6 +1,6 @@
 package com.userservice.userservice.dto;
 
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

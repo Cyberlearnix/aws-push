@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: instructor-service
+
+# JWT Configuration (must match user-service exactly)
+jwt:
+  secret: CyberLearnixSuperSecureJWTKeyChangeThis
+
+# Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/cyberlearnixdb
+spring.datasource.username=cyberlearnix
+spring.datasource.password=cyberlearnix123
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Server Configuration
+server.port=8083
+
+# Actuator Configuration
+management.endpoints.web.exposure.include=health,info

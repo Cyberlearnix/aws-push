@@ -9,20 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/instructors/{id}")
 @RequiredArgsConstructor
 public class DashboardController {
 
     private final ReportService reportService;
 
     // GET /instructors/{id}/dashboard → Instructor dashboard
-    @GetMapping("/dashboard")
+    @GetMapping({"/instructors/{id}/dashboard", "/api/instructors/{id}/dashboard"})
     public ResponseEntity<DashboardResponse> dashboard(@PathVariable("id") UUID instructorId) {
         return ResponseEntity.ok(reportService.getDashboard(instructorId));
     }
 
     // GET /instructors/{id}/courses/{courseId}/analytics → Course analytics
-    @GetMapping("/courses/{courseId}/analytics")
+    @GetMapping({"/instructors/{id}/courses/{courseId}/analytics", "/api/instructors/{id}/courses/{courseId}/analytics"})
     public ResponseEntity<AnalyticsResponse> analytics(
             @PathVariable("id") UUID instructorId,
             @PathVariable Long courseId
@@ -31,7 +30,7 @@ public class DashboardController {
     }
 
     // GET /instructors/{id}/earnings → Instructor earnings report
-    @GetMapping("/earnings")
+    @GetMapping({"/instructors/{id}/earnings", "/api/instructors/{id}/earnings"})
     public ResponseEntity<?> earnings(@PathVariable("id") UUID instructorId) {
         return ResponseEntity.ok(java.util.Map.of("instructorId", instructorId, "totalEarnings", reportService.getEarnings(instructorId)));
     }

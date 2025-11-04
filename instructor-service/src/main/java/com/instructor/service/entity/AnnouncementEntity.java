@@ -6,8 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Access(AccessType.FIELD)
 @Table(
         name = "announcements",
         indexes = {
@@ -36,8 +38,8 @@ public class AnnouncementEntity {
     private String priority; // HIGH, MEDIUM, LOW
 
     @Builder.Default
-    @Column(nullable = false)
-    private Boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -50,4 +52,7 @@ public class AnnouncementEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private CourseEntity course;
+    
+    @Column(name = "instructor_id", nullable = false)
+    private UUID instructorId;
 }

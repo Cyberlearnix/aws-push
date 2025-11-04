@@ -1,11 +1,11 @@
 package com.userservice.userservice.service;
 
 import com.userservice.userservice.dto.PasswordLoginRequest;
-import com.userservice.userservice.dto.PasswordLoginResponse;
 import com.userservice.userservice.dto.RegisterRequestDTO;
+import com.userservice.userservice.dto.LoginResult;
 import com.userservice.userservice.dto.UserPublicDTO;
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import com.userservice.userservice.repository.UserRepository;
 import com.userservice.userservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class AuthService {
         var user = userOpt.get();
 
         // Check if user account is active
-        if (!Boolean.TRUE.equals(user.getIsActive())) {
+        if (user == null || !user.isActive()) {
             return LoginResult.invalid("Your account has been deactivated. Please contact administrator for assistance.");
         }
 
@@ -76,16 +77,17 @@ public class AuthService {
         user.setLastLoginAt(Instant.now());
         userRepository.save(user);
 
-        // tokens
+        // Generate tokens
         String access = jwtUtil.generateAccessToken(user);
         String refresh = jwtUtil.generateRefreshToken(user);
 
-        // FIX: pass enum `UserRole` (not String) into UserPublicDTO
+        // Create user DTO
         UserPublicDTO userDto = new UserPublicDTO(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
-                user.getRole(), // <-- enum (UserRole)
+                user.getRole(),
+                user.getCountryCode(),
                 user.getPhone(),
                 user.getAlternatePhone(),
                 user.getAddress(),
@@ -96,19 +98,21 @@ public class AuthService {
                 user.getInstagram(),
                 user.getFacebook(),
                 user.getInternshala(),
-                user.getCountryCode()
+                user.getDepartment(),
+                user.getDesignation(),
+                user.getQualification(),
+                user.getBio(),
+                user.getSpecialization(),
+                user.getExperienceYears()
         );
 
-        PasswordLoginResponse response = PasswordLoginResponse.builder()
-                .userExists(true)
-                .success(true)
-                .message("Login successful")
-                .accessToken(access)
-                .refreshToken(refresh)
-                .user(userDto)
-                .build();
-
-        return LoginResult.success(response);
+        return LoginResult.success(Map.of(
+                "success", true,
+                "message", "Login successful",
+                "accessToken", access,
+                "refreshToken", refresh,
+                "user", userDto
+        ));
     }
 
     public String registerUser(RegisterRequestDTO dto, String tempToken) {
@@ -135,11 +139,5 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return jwtUtil.generateAccessToken(savedUser) + "::" + jwtUtil.generateRefreshToken(savedUser);
-    }
-
-    public record LoginResult(boolean ok, boolean locked, PasswordLoginResponse response, String errorMessage) {
-        public static LoginResult success(PasswordLoginResponse r) { return new LoginResult(true, false, r, null); }
-        public static LoginResult invalid(String msg) { return new LoginResult(false, false, null, msg); }
-        public static LoginResult locked(String msg) { return new LoginResult(false, true, null, msg); }
     }
 }

@@ -1,31 +1,14 @@
-# Use OpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin 21 JRE Alpine as base image for better security and smaller size
+FROM eclipse-temurin:21-jre-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Install curl for health checks (Alpine uses apk)
+RUN apk add --no-cache curl
 
-# Copy Gradle wrapper and build files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-
-# Copy instructor-service specific files
-COPY instructor-service/build.gradle ./instructor-service/
-COPY instructor-service/src ./instructor-service/src
-
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Build the application
-RUN ./gradlew :instructor-service:build -x test
-
-# Copy the built JAR file deterministically
-RUN JAR_FILE=$(ls instructor-service/build/libs/*-SNAPSHOT.jar 2>/dev/null || ls instructor-service/build/libs/*.jar | head -n 1) \
-    && cp "$JAR_FILE" app.jar
+# Copy the executable JAR file (relative path from service directory)
+COPY build/libs/instructor-service-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port
 EXPOSE 8083

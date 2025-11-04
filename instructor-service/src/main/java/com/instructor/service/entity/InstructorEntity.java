@@ -10,14 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(
-        name = "instructors",
-        indexes = {
-                @Index(name = "idx_instructor_user_id", columnList = "userId", unique = true),
-                @Index(name = "idx_instructor_department", columnList = "department")
-        }
-)
+// This class is no longer an entity as it's a duplicate of Instructor class
+// Kept for backward compatibility or DTO purposes
 @Getter
 @Setter
 @NoArgsConstructor

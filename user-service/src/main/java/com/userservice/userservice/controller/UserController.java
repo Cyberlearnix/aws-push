@@ -8,7 +8,7 @@ import com.userservice.userservice.dto.UploadPhotoRequestDTO;
 import com.userservice.userservice.dto.UpdateUserRequestDTO;
 import com.userservice.userservice.dto.UserProfileUpdateResponseDTO;
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import com.userservice.userservice.service.UserService;
 import com.userservice.userservice.service.EmailAuthService;
 import com.userservice.userservice.util.JwtUtil;
@@ -225,6 +225,26 @@ public class UserController {
     public ResponseEntity<?> getById(@Parameter(description = "User ID") @PathVariable UUID id) {
         try {
             return ResponseEntity.ok(userService.getPublicById(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/email/{email}")
+    @Operation(
+        summary = "Get user by email",
+        description = "Retrieves user information by email address"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User found"),
+        @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<?> getByEmail(@Parameter(description = "User's email address") @PathVariable String email) {
+        try {
+            return userService.findByEmail(email)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
             return ResponseEntity.status(404).body(Map.of("success", false, "error", e.getMessage()));
         }

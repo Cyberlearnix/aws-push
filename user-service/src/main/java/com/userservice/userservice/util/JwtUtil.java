@@ -1,7 +1,7 @@
 package com.userservice.userservice.util;
 
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -65,9 +65,9 @@ public class JwtUtil {
     // ✅ Generate Access Token
     public String generateAccessToken(UserEntity user) {
         return Jwts.builder()
-                .setSubject(user.getId().toString())
+                .setSubject(user.getId() != null ? user.getId().toString() : "")
                 .claim("email", user.getEmail())
-                .claim("role", user.getRole().name())
+                .claim("role", user.getRole() != null ? user.getRole().name() : "")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS))
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -80,9 +80,9 @@ public class JwtUtil {
     // ✅ Generate Refresh Token
     public String generateRefreshToken(UserEntity user) {
         return Jwts.builder()
-                .setSubject(user.getId().toString())
+                .setSubject(user.getId() != null ? user.getId().toString() : "")
                 .claim("email", user.getEmail())
-                .claim("role", user.getRole().name())
+                .claim("role", user.getRole() != null ? user.getRole().name() : "")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS))
                 .signWith(key, SignatureAlgorithm.HS512)

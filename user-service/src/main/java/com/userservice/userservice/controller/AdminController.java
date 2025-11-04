@@ -1,10 +1,10 @@
 package com.userservice.userservice.controller;
 
+import com.cyberlearnix.shared.enums.UserRole;
 import com.userservice.userservice.dto.AdminCreateUserRequestDTO;
 import com.userservice.userservice.dto.AdminUpdateUserRequestDTO;
 import com.userservice.userservice.dto.UserPublicDTO;
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
 import com.userservice.userservice.service.UserService;
 import com.userservice.userservice.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,39 +90,65 @@ public class AdminController {
         }
     }
 
-    // 3. POST /admin/add-users → Create user manually
+    // 2. POST /admin/add-users → Create user (admin only, no OTP required)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-users")
     public ResponseEntity<?> addUser(@RequestBody AdminCreateUserRequestDTO dto, HttpServletRequest request) {
         String requestId = UUID.randomUUID().toString();
         logger.info("[{}] Creating new user with email: {} - IP: {}", requestId, dto.getEmail(), request.getRemoteAddr());
         
+        // Use the role directly from DTO, default to STUDENT if not specified
+        UserRole role = dto.getRole() != null ? dto.getRole() : UserRole.STUDENT;
+        return createUserWithRole(dto, role, requestId, request);
+    }
+    
+    // 3.1 POST /admin/add-instructor → Create instructor manually
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/add-instructor")
+    public ResponseEntity<?> addInstructor(@RequestBody AdminCreateUserRequestDTO dto, HttpServletRequest request) {
+        String requestId = UUID.randomUUID().toString();
+        logger.info("[{}] Creating new instructor with email: {} - IP: {}", requestId, dto.getEmail(), request.getRemoteAddr());
+        
+        // Force role to be INSTRUCTOR
+        return createUserWithRole(dto, UserRole.INSTRUCTOR, requestId, request);
+    }
+    
+    private ResponseEntity<?> createUserWithRole(AdminCreateUserRequestDTO dto, UserRole role, String requestId, HttpServletRequest request) {
+        
         try {
-            if (userService.existsByEmail(dto.getEmail())) {
-                logger.warn("[{}] Email already exists: {}", requestId, dto.getEmail());
-                return ResponseEntity.badRequest().body(
-                    Map.of("success", false, "message", "Email already exists", "requestId", requestId)
-                );
+            logger.info("[{}] Creating new {} with email: {}", requestId, role, dto.getEmail());
+            
+            // Create user with the specified role
+            UserEntity savedUser = userService.registerUserWithRole(
+                dto.getEmail(),
+                dto.getFullName(),
+                dto.getPhone(),
+                dto.getPassword(),
+                role
+            );
+
+            logger.info("[{}] Successfully created {} with ID: {}", requestId, role, savedUser.getId());
+            
+            // Return appropriate response based on role
+            if (role == UserRole.INSTRUCTOR) {
+                return ResponseEntity.status(201).body(Map.of(
+                    "success", true,
+                    "message", "Instructor created successfully",
+                    "userId", savedUser.getId(),
+                    "email", savedUser.getEmail(),
+                    "role", role.name(),
+                    "requestId", requestId
+                ));
+            } else {
+                return ResponseEntity.status(201).body(Map.of(
+                    "success", true,
+                    "message", "User created successfully",
+                    "userId", savedUser.getId(),
+                    "email", savedUser.getEmail(),
+                    "role", role.name(),
+                    "requestId", requestId
+                ));
             }
-            
-            UserEntity user = userService.registerUser(dto.getEmail(), dto.getFullName(), dto.getPhone(), dto.getPassword());
-            
-            if (dto.getRole() != null && dto.getRole() != UserRole.STUDENT) {
-                logger.info("[{}] Setting custom role for user {}: {}", requestId, user.getEmail(), dto.getRole());
-                user.setRole(dto.getRole());
-                user = userService.saveUser(user);
-            }
-            
-            UserPublicDTO createdUser = userService.getPublicById(user.getId());
-            logger.info("[{}] Successfully created user: {} with ID: {}", 
-                requestId, createdUser.getEmail(), createdUser.getId());
-                
-            return ResponseEntity.ok(Map.of(
-                "success", true, 
-                "message", "User created successfully",
-                "user", createdUser,
-                "requestId", requestId
-            ));
             
         } catch (IllegalArgumentException e) {
             // Handle password validation and other business logic errors
@@ -180,10 +206,9 @@ public class AdminController {
                 user.setRole(dto.getRole());
             }
             
-            if (dto.getIsActive() != null && dto.getIsActive() != user.getIsActive()) {
-                logger.info("[{}] Updating active status for user {} to {}", 
-                    requestId, user.getEmail(), dto.getIsActive() ? "ACTIVE" : "INACTIVE");
-                user.setIsActive(dto.getIsActive());
+            if (dto.getIsActive() != null && dto.getIsActive() != user.isActive()) {
+                logger.info("[{}] Updating active status for user: {} to {}", requestId, user.getEmail(), dto.getIsActive() ? "ACTIVE" : "INACTIVE");
+                user.setActive(dto.getIsActive());
             }
             
             // Save the updated user
@@ -258,7 +283,7 @@ public class AdminController {
                 );
             }
             
-            if (!user.getIsActive()) {
+            if (!user.isActive()) {
                 logger.info("[{}] User {} is already deactivated", requestId, user.getEmail());
                 return ResponseEntity.ok(Map.of(
                     "success", true, 
@@ -350,7 +375,7 @@ public class AdminController {
                 );
             }
             
-            if (user.getIsActive()) {
+            if (user.isActive()) {
                 logger.info("[{}] User {} is already active", requestId, user.getEmail());
                 return ResponseEntity.ok(Map.of(
                     "success", true, 

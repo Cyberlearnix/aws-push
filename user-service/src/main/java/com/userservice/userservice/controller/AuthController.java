@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
+import com.userservice.userservice.dto.LoginResult;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,7 +48,7 @@ public class AuthController {
             UserEntity user = userService.getUserById(userId);
 
             // Check if user account is still active
-            if (!Boolean.TRUE.equals(user.getIsActive())) {
+            if (user != null && !user.isActive()) {
                 return ResponseEntity.status(401).body(Map.of(
                         "success", false,
                         "message", "Your account has been deactivated. Please contact administrator for assistance.",

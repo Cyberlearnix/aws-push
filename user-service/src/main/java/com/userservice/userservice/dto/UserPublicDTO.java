@@ -1,6 +1,6 @@
 package com.userservice.userservice.dto;
 
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,4 +32,12 @@ public class UserPublicDTO {
     private String instagram;
     private String facebook;
     private String internshala;
+
+    // --- Instructor-specific fields (only populated if user role is INSTRUCTOR) ---
+    private String department;
+    private String designation;
+    private String qualification;
+    private String bio;
+    private String specialization;
+    private Integer experienceYears;
 }

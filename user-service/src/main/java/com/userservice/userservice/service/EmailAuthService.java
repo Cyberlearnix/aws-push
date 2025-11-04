@@ -4,7 +4,7 @@ import com.userservice.userservice.dto.EmailRequestDTO;
 import com.userservice.userservice.dto.OtpVerificationRequestDTO;
 import com.userservice.userservice.dto.RegisterRequestDTO;
 import com.userservice.userservice.entity.UserEntity;
-import com.userservice.userservice.enums.UserRole;
+import com.cyberlearnix.shared.enums.UserRole;
 import com.userservice.userservice.exception.OtpVerificationException;
 import com.userservice.userservice.util.JwtUtil;
 import com.userservice.userservice.util.OtpUtil;
@@ -121,10 +121,10 @@ public class EmailAuthService {
 
                 log.info("[{}] Fetching admin user details", requestId);
                 UserEntity admin = userService.getUserByEmail(email);
-                log.info("[{}] Admin user fetched - Role: {}, Active: {}", requestId, admin.getRole(), admin.getIsActive());
+                log.info("[{}] Admin user fetched - Role: {}, Active: {}", requestId, admin.getRole(), admin != null ? admin.isActive() : "null");
                 
                 // Check if admin account is active
-                if (!Boolean.TRUE.equals(admin.getIsActive())) {
+                if (admin == null || !admin.isActive()) {
                     log.warn("[{}] Admin account is deactivated: {}", requestId, maskEmail(email));
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account has been deactivated. Please contact system administrator for assistance.");
                 }
@@ -149,10 +149,10 @@ public class EmailAuthService {
             if (userExists) {
                 log.info("[{}] Existing user login for email: {}", requestId, maskEmail(email));
                 UserEntity user = userService.getUserByEmail(email);
-                log.info("[{}] User fetched - Role: {}, Active: {}", requestId, user.getRole(), user.getIsActive());
+                log.info("[{}] User fetched - Role: {}, Active: {}", requestId, user.getRole(), user != null ? user.isActive() : "null");
                 
                 // Check if user account is active
-                if (!Boolean.TRUE.equals(user.getIsActive())) {
+                if (user == null || !user.isActive()) {
                     log.warn("[{}] User account is deactivated: {}", requestId, maskEmail(email));
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account has been deactivated. Please contact administrator for assistance.");
                 }

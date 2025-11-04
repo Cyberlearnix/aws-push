@@ -179,7 +179,7 @@
       "name": "Content (Modules & Upload)",
       "item": [
         {
-          "name": "Add Module",
+          "name": "Add Module (JSON)",
           "request": {
             "method": "POST",
             "header": [
@@ -189,7 +189,7 @@
             "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/modules",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\"\n}"
+              "raw": "{\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\",\n  \"contentType\": \"TEXT\"\n}"
             }
           },
           "response": [
@@ -197,7 +197,38 @@
               "name": "200 OK",
               "status": "OK",
               "code": 200,
-              "body": "{\n  \"id\": {{moduleId}},\n  \"courseId\": {{courseId}},\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\"\n}"
+              "body": "{\n  \"id\": {{moduleId}},\n  \"courseId\": {{courseId}},\n  \"title\": \"Lesson 1\",\n  \"content\": \"# Welcome to Lesson 1\",\n  \"contentType\": \"TEXT\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Add Module with Files",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/instructors/{{instructorId}}/courses/{{courseId}}/modules/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { 
+                  "key": "module", 
+                  "type": "text",
+                  "value": "{\"title\":\"Video Lesson\",\"content\":\"Introduction to the course\"}",
+                  "contentType": "application/json"
+                },
+                { "key": "videoFile", "type": "file", "src": "/path/to/your/video.mp4" },
+                { "key": "thumbnailFile", "type": "file", "src": "/path/to/your/thumbnail.jpg" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": {{moduleId}},\n  \"courseId\": {{courseId}},\n  \"title\": \"Video Lesson\",\n  \"content\": \"Introduction to the course\",\n  \"contentType\": \"VIDEO\",\n  \"videoUrl\": \"/uploads/unique-video-filename.mp4\",\n  \"thumbnailUrl\": \"/uploads/unique-thumbnail-filename.jpg\"\n}"
             }
           ]
         },
